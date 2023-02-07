@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"], // TS需要引用的库，即声明文件
+    "allowJs": true, // 允许编译js文件
+    "skipLibCheck": true, // 跳过所有声明文件的类型检查
+    "strict": true,
+    "forceConsistentCasingInFileNames": true, // 不允许对同一文件使用不一致大小写的引用
+    "noEmit": true, // 不输出文件
+    "esModuleInterop": true, // 允许export=导出，由import from导入
+    "module": "esnext",
+    "moduleResolution": "node", // 模块解析策略，ts默认用node的解析策略，即相对的方式导入
+    "resolveJsonModule": true, // 允许把json文件当做模块进行解析
+    "isolatedModules": true, // 将每个文件作为单独的模块
+    "jsx": "preserve", // 在 .tsx文件里支持JSX
+    "incremental": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
+}
