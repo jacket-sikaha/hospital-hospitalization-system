@@ -87,10 +87,6 @@ const App: React.FC = () => {
             />
           </Col>
         </Row>
-
-        {/* <div className="logo" style={{ margin: "auto", width: "56px" }}> */}
-
-        {/* </div> */}
       </Header>
       <Layout>
         <Sider
@@ -113,23 +109,18 @@ const App: React.FC = () => {
             items={items2}
           />
         </Sider>
-        <Layout style={{ padding: "0 24px 24px" }}>
-          <Breadcrumb style={{ margin: "16px 0" }}>
-            {/* <Breadcrumb.Item>Home</Breadcrumb.Item>
-            <Breadcrumb.Item>List</Breadcrumb.Item>
-            <Breadcrumb.Item>App</Breadcrumb.Item> */}
-          </Breadcrumb>
+        {/* <Layout style={{ padding: "0 24px 24px" }}>
           <Content
             style={{
               padding: 24,
-              margin: 0,
+              marginTop: "26px",
               minHeight: 280,
               background: colorBgContainer,
             }}
           >
             Content
           </Content>
-        </Layout>
+        </Layout> */}
       </Layout>
     </Layout>
   );
