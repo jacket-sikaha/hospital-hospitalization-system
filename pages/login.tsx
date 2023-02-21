@@ -1,8 +1,8 @@
-import Welcome from "@/components/welcome/welcome";
 import Head from "next/head";
+import dynamic from "next/dynamic";
 
-export default function Home() {
-  console.log(222);
+const AuthForm = dynamic(import("@/components/auth/auth-form"), { ssr: false }); // Async API cannot be server-side rendered
+export default function Login() {
   return (
     <>
       <Head>
@@ -11,7 +11,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Welcome />
+      <AuthForm />
     </>
   );
 }

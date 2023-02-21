@@ -1,0 +1,30 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  color: aliceblue;
+}
+
+.description {
+  font-family: Comic Sans MS, Helvetica Neue, Microsoft Yahei, -apple-system,
+    sans-serif;
+  font-size: 1.2rem;
+  font-weight: 200;
+  margin: 2rem;
+}
+
+.loginLink {
+  font-family: Comic Sans MS, Helvetica Neue, Microsoft Yahei, -apple-system,
+    sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 3px;
+  white-space: pre;
+  pointer-events: auto;
+  text-decoration: none;
+}
+.loginLink:hover {
+  transition: cubic-bezier(0.075, 0.82, 0.165, 1) 1.5s 0s;
+  color: aliceblue;
+}
