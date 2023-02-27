@@ -1,4 +1,11 @@
-import { LockOutlined, MobileOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  GithubFilled,
+  LockOutlined,
+  MobileOutlined,
+  TaobaoOutlined,
+  UserOutlined,
+  WeiboOutlined,
+} from "@ant-design/icons";
 import {
   LoginFormPage,
   ProFormCaptcha,
@@ -6,19 +13,90 @@ import {
   ProFormText,
 } from "@ant-design/pro-components";
 import { Button, Divider, message, Space, Tabs } from "antd";
-
 import type { CSSProperties } from "react";
-import { useState } from "react";
-
+import { useRouter } from "next/router";
+import { getSession, signIn } from "next-auth/react";
+import { useEffect, useState } from "react";
 type LoginType = "phone" | "account";
+
+const iconStyles: CSSProperties = {
+  color: "rgba(0, 0, 0, 0.2)",
+  fontSize: "18px",
+  verticalAlign: "middle",
+  cursor: "pointer",
+};
+
+async function createUser(email: string, password: string) {
+  const response = await fetch("/api/auth/signup", {
+    method: "POST",
+    body: JSON.stringify({ email, password }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Something went wrong!");
+  }
+
+  return data;
+}
 
 export default function AuthForm() {
   const [loginType, setLoginType] = useState<LoginType>("phone");
+  const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
+
+  async function submitHandler(username: string, password: string) {
+    const enteredEmail = username;
+    const enteredPassword = password;
+
+    // optional: Add validation
+
+    // if (isLogin) {
+    const result: unknown = await signIn("credentials", {
+      redirect: false,
+      email: enteredEmail,
+      password: enteredPassword,
+    });
+
+    if (!result.error) {
+      // set some auth state
+      message.success("提交成功");
+      router.replace("/profile");
+    } else {
+      message.error(result.error);
+    }
+
+    // } else {
+    //   try {
+    //     const result = await createUser(enteredEmail, enteredPassword);
+    //     console.log(result);
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // }
+  }
+
+  useEffect(() => {
+    // 保护登录页 当我们登陆后就无需在访问该页面
+    // 防止用户使用地址栏的url进行跳转 会话存在时进行重定向
+    getSession().then((session) => {
+      if (session) {
+        router.replace("/asd");
+      } else {
+        setIsLoading(false);
+      }
+    });
+  }, [router]);
+
   return (
     <div
       style={{
         backgroundColor: "white",
-        height: "calc(100vh - 48px)",
+        height: "calc(100vh - 16px)",
         // margin: -24,
       }}
     >
@@ -60,59 +138,72 @@ export default function AuthForm() {
               flexDirection: "column",
             }}
           >
-            {/* <Divider plain>
-            <span
-              style={{ color: "#CCC", fontWeight: "normal", fontSize: 14 }}
-            >
-              其他登录方式
-            </span>
-          </Divider>
-          <Space align="center" size={24}>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "column",
-                height: 40,
-                width: 40,
-                border: "1px solid #D4D8DD",
-                borderRadius: "50%",
-              }}
-            >
-              <AlipayOutlined style={{ ...iconStyles, color: "#1677FF" }} />
-            </div>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "column",
-                height: 40,
-                width: 40,
-                border: "1px solid #D4D8DD",
-                borderRadius: "50%",
-              }}
-            >
-              <TaobaoOutlined style={{ ...iconStyles, color: "#FF6A10" }} />
-            </div>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "column",
-                height: 40,
-                width: 40,
-                border: "1px solid #D4D8DD",
-                borderRadius: "50%",
-              }}
-            >
-              <WeiboOutlined style={{ ...iconStyles, color: "#333333" }} />
-            </div>
-          </Space> */}
+            <Divider plain>
+              <span
+                style={{ color: "#CCC", fontWeight: "normal", fontSize: 14 }}
+              >
+                其他登录方式
+              </span>
+            </Divider>
+            <Space align="center" size={24}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexDirection: "column",
+                  height: 40,
+                  width: 40,
+                  border: "1px solid #D4D8DD",
+                  borderRadius: "50%",
+                }}
+              >
+                <GithubFilled style={{ ...iconStyles, color: "#000000" }} />
+              </div>
+              {/* <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexDirection: "column",
+                  height: 40,
+                  width: 40,
+                  border: "1px solid #D4D8DD",
+                  borderRadius: "50%",
+                }}
+              >
+                <TaobaoOutlined style={{ ...iconStyles, color: "#FF6A10" }} />
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexDirection: "column",
+                  height: 40,
+                  width: 40,
+                  border: "1px solid #D4D8DD",
+                  borderRadius: "50%",
+                }}
+              >
+                <WeiboOutlined style={{ ...iconStyles, color: "#333333" }} />
+              </div> */}
+            </Space>
           </div>
         }
+        onFinish={async (values) => {
+          // const waitTime = (time: number = 100) => {
+          //   return new Promise((resolve) => {
+          //     setTimeout(() => {
+          //       resolve(true);
+          //       console.log("values", values);
+          //     }, time);
+          //   });
+          // };
+          // await waitTime(2000);
+          const { username, password } = values;
+          submitHandler(username, password);
+        }}
       >
         <Tabs
           centered
@@ -130,7 +221,7 @@ export default function AuthForm() {
                 size: "large",
                 prefix: <UserOutlined className={"prefixIcon"} />,
               }}
-              placeholder={"用户名: admin or user"}
+              placeholder={"用户名: email"}
               rules={[{ required: true, message: "请输入用户名!" }]}
             />
             <ProFormText.Password
@@ -139,7 +230,7 @@ export default function AuthForm() {
                 size: "large",
                 prefix: <LockOutlined className={"prefixIcon"} />,
               }}
-              placeholder={"密码: ant.design"}
+              placeholder={"密码:"}
               rules={[{ required: true, message: "请输入密码！" }]}
             />
           </>
@@ -194,7 +285,7 @@ export default function AuthForm() {
               float: "right",
             }}
           >
-            忘记密码
+            忘记密码请联系管理员
           </a>
         </div>
       </LoginFormPage>
