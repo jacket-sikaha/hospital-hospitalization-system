@@ -37,46 +37,33 @@ function MainNavigation() {
   const headerRef = useRef();
   return (
     <header className={classes.header} ref={headerRef}>
-      <Link href="/">
-        <div className={classes.logo}>
-          <Image
-            src="/豆浆.png"
-            alt="icon"
-            style={{ display: "block" }}
-            width={56}
-            height={56}
-          />
-        </div>
-      </Link>
-      <Menu
-        theme="dark"
-        mode="horizontal"
-        defaultSelectedKeys={["app"]}
-        items={items}
-      />
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          // border: "1px solid black",
+        }}
+      >
+        <Link href="/">
+          <div className={classes.logo}>
+            <Image
+              src="/豆浆.png"
+              alt="icon"
+              style={{ display: "block" }}
+              width={56}
+              height={56}
+            />
+          </div>
+        </Link>
+        <Menu
+          theme="dark"
+          mode="horizontal"
+          defaultSelectedKeys={["app"]}
+          items={items}
+        />
+      </div>
       <Popover
         content={
-          // <Menu style={{ border: "1px solid balck" }}>
-          //   <Menu.Item type="divider">我的个人资料</Menu.Item>
-          //   <Menu.Divider></Menu.Divider>
-          //   <Menu.Item danger>退出</Menu.Item>
-          // </Menu>
-          // <List size="small" split={false}>
-          //   <List.Item type="divider">
-          //     <Button>我的个人资料</Button>
-          //   </List.Item>
-          //   <List.Item type="divider">
-          //     <Button>123</Button>
-          //   </List.Item>
-          //   <List.Item type="divider">
-          //     <Button>qwrq</Button>
-          //   </List.Item>
-          //   <List.Item danger>
-          //     <Button type="text" danger>
-          //       退出
-          //     </Button>
-          //   </List.Item>
-          // </List>
           <div
             style={{
               display: "flex",

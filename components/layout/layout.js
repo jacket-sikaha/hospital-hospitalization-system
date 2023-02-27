@@ -46,60 +46,6 @@ const DashboardLayout = (props) => {
           height: "100vh",
         }}
       >
-        {/* <Header className="header">
-          <Image
-            src="/豆浆.png"
-            alt="icon"
-            style={{ display: "block" }}
-            width={56}
-            height={56}
-          />
-
-          <Dropdown menu={{ MenuItems }}>
-            <a onClick={(e) => e.preventDefault()}>
-              <Space>
-                <Avatar
-                  size={{ xs: 24, sm: 32, md: 40, lg: 40, xl: 40, xxl: 40 }}
-                  style={{ backgroundColor: "#87d068" }}
-                  icon={<UserOutlined />}
-                  // src="https://joesch.moe/api/v1/random"
-                />
-                <DownOutlined />
-              </Space>
-            </a>
-          </Dropdown>
-          {/* <Row>
-            <Col span={22}>
-              <Space style={{ width: "50vw" }}>
-                <Image
-                  src="/豆浆.png"
-                  alt="icon"
-                  style={{ display: "block" }}
-                  width={56}
-                  height={56}
-                />
-                <Menu
-                  theme="dark"
-                  mode="horizontal"
-                  defaultSelectedKeys={["app"]}
-                  items={items}
-                />
-              </Space>
-            </Col>
-            <Col span={2}>
-              <Avatar
-                size={{ xs: 24, sm: 32, md: 40, lg: 40, xl: 40, xxl: 40 }}
-                style={{ backgroundColor: "#87d068" }}
-                icon={<UserOutlined />}
-                // src="https://joesch.moe/api/v1/random"
-              />
-              <Dropdown menu={{ MenuItems }}>
-                <DownOutlined style={{ backgroundColor: "#ffffff" }} />
-              </Dropdown>
-            </Col>
-          </Row> 
-        </Header> 
-        */}
         <MainNavigation />
         <Layout>
           <Sider
