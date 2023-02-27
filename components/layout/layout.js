@@ -44,7 +44,7 @@ const DashboardLayout = (props) => {
   } else {
     getSession().then((session) => {
       if (!session) {
-        // router.replace("/login");
+        router.replace("/login");
         console.log("session", session);
       }
     });

@@ -8,16 +8,18 @@ import {
 } from "@ant-design/icons";
 import {
   LoginFormPage,
+  ModalForm,
   ProFormCaptcha,
   ProFormCheckbox,
+  ProFormInstance,
   ProFormText,
 } from "@ant-design/pro-components";
 import { Button, Divider, message, Space, Tabs } from "antd";
-import type { CSSProperties } from "react";
+import { CSSProperties, useRef } from "react";
 import { useRouter } from "next/router";
 import { getSession, signIn } from "next-auth/react";
 import { useEffect, useState } from "react";
-type LoginType = "phone" | "account";
+type LoginType = "phone" | "account" | "register";
 
 const iconStyles: CSSProperties = {
   color: "rgba(0, 0, 0, 0.2)",
@@ -45,7 +47,11 @@ async function createUser(email: string, password: string) {
 }
 
 export default function AuthForm() {
-  const [loginType, setLoginType] = useState<LoginType>("phone");
+  const restFormRef = useRef<ProFormInstance>();
+  const formRef = useRef<ProFormInstance>();
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+
+  const [loginType, setLoginType] = useState<LoginType>("account");
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
@@ -54,8 +60,6 @@ export default function AuthForm() {
     const enteredPassword = password;
 
     // optional: Add validation
-
-    // if (isLogin) {
     const result: unknown = await signIn("credentials", {
       redirect: false,
       email: enteredEmail,
@@ -69,15 +73,6 @@ export default function AuthForm() {
     } else {
       message.error(result.error);
     }
-
-    // } else {
-    //   try {
-    //     const result = await createUser(enteredEmail, enteredPassword);
-    //     console.log(result);
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // }
   }
 
   useEffect(() => {
@@ -115,19 +110,70 @@ export default function AuthForm() {
           },
           // title: "欢迎使用HHS系统",
           subTitle: "我们奋力前行，小舟逆水而上，不断地被浪潮推回到过去。",
-          // action: (
-          //   <Button
-          //     size="large"
-          //     style={{
-          //       borderRadius: 20,
-          //       background: "#fff",
-          //       color: "#1677FF",
-          //       width: 120,
-          //     }}
-          //   >
-          //     去看看
-          //   </Button>
-          // ),
+          action: (
+            <ModalForm
+              title="注册"
+              formRef={restFormRef}
+              open={modalVisible}
+              trigger={
+                <Button
+                  type="primary"
+                  style={{
+                    borderRadius: 20,
+                    background: "#fff",
+                    color: "#1677FF",
+                    width: 120,
+                  }}
+                  onClick={() => {
+                    setModalVisible(true);
+                  }}
+                >
+                  注册
+                </Button>
+              }
+              onOpenChange={setModalVisible}
+              submitter={{
+                searchConfig: {
+                  resetText: "重置",
+                },
+                resetButtonProps: {
+                  onClick: () => {
+                    restFormRef.current?.resetFields();
+                    //   setModalVisible(false);
+                  },
+                },
+              }}
+              onFinish={async ({ enteredEmail, enteredPassword }) => {
+                try {
+                  const result = await createUser(
+                    enteredEmail,
+                    enteredPassword
+                  );
+                  message.success("提交成功");
+
+                  return true;
+                } catch (error) {
+                  message.error(error);
+                  return false;
+                }
+              }}
+            >
+              <ProFormText
+                width="md"
+                name="enteredEmail"
+                label="用户名"
+                // tooltip="最长为 16 位"
+                placeholder="请输入用户名"
+              />
+
+              <ProFormText
+                width="md"
+                name="enteredPassword"
+                label="密码"
+                placeholder="请输入密码"
+              />
+            </ModalForm>
+          ),
         }}
         actions={
           <div
@@ -193,7 +239,7 @@ export default function AuthForm() {
         }
         onFinish={async (values) => {
           const { username, password } = values;
-          submitHandler(username, password);
+          await submitHandler(username, password);
         }}
       >
         <Tabs
@@ -263,6 +309,7 @@ export default function AuthForm() {
             />
           </>
         )}
+
         <div
           style={{
             marginBlockEnd: 24,
