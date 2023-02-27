@@ -18,6 +18,7 @@
 
 .header ul {
   list-style: none;
+  width: 30rem;
   margin: 0 2rem;
   padding: 0;
   display: flex;

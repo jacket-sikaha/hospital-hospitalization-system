@@ -1,5 +1,5 @@
-import { useRouter } from "next/dist/client/router";
-import { Fragment } from "react";
+import { useRouter } from "next/router";
+import { Fragment, useEffect } from "react";
 import React from "react";
 import {
   SmileOutlined,
@@ -21,10 +21,10 @@ import {
   Dropdown,
   Button,
 } from "antd";
-import Image from "next/image";
 import MainNavigation from "./main-navigation";
+import { getSession } from "next-auth/react";
 import { items, items2 } from "./menuItem";
-const { Header, Sider, Content } = Layout;
+const { Sider, Content } = Layout;
 
 // <List.Item>我的个人资料</List.Item>
 // 退出
@@ -33,11 +33,21 @@ const DashboardLayout = (props) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+  const router = useRouter();
+
+  2;
 
   // useRouter来控制布局展示
-  const { pathname } = useRouter();
+  const { pathname } = router;
   if (pathname.slice(1) === "" || pathname.slice(1) === "login") {
     return <main>{props.children}</main>;
+  } else {
+    getSession().then((session) => {
+      if (!session) {
+        // router.replace("/login");
+        console.log("session", session);
+      }
+    });
   }
   return (
     <Fragment>

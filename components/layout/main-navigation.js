@@ -74,7 +74,7 @@ function MainNavigation() {
             <Button type="text">我的个人资料</Button>
             <Button type="text">123</Button>
             <Button type="text">qwrq</Button>
-            <Button type="text" danger>
+            <Button type="text" danger onClick={logoutHandler}>
               退出
             </Button>
           </div>

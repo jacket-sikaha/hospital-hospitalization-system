@@ -192,15 +192,6 @@ export default function AuthForm() {
           </div>
         }
         onFinish={async (values) => {
-          // const waitTime = (time: number = 100) => {
-          //   return new Promise((resolve) => {
-          //     setTimeout(() => {
-          //       resolve(true);
-          //       console.log("values", values);
-          //     }, time);
-          //   });
-          // };
-          // await waitTime(2000);
           const { username, password } = values;
           submitHandler(username, password);
         }}
