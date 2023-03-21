@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Table } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
-
+import { drugCount } from "../lib/sql/drug";
 interface DataType {
   name: {
     first: string;
@@ -53,6 +53,8 @@ const getRandomuserParams = (params: TableParams) => ({
 });
 
 export default function DrugManagement() {
+  // 客户端组件内无法使用nodejs来调用数据库的方法
+  // console.log("drugCount", drugCount());
   return (
     <>
       <Head>

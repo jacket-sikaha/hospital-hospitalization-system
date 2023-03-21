@@ -19,9 +19,19 @@ export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }: AppPropsWithLayout) {
+  const router = useRouter();
+  useEffect(() => {
+    getSession().then((session) => {
+      console.log("session", session);
+      if (!session) {
+        router.replace("/login");
+      }
+    });
+  }, []);
+
   // Use the layout defined at the page level, if available
+  // 检测页面组件page里是否含有getLayout属性，没有就采用设计好的layout组件包裹显示
   const getLayout = Component.getLayout ?? ((page) => <Layout>{page}</Layout>);
-  console.log(" ", getLayout);
 
   return (
     <SessionProvider session={session}>
