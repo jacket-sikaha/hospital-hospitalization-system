@@ -1,8 +1,10 @@
 import Head from "next/head";
 import dynamic from "next/dynamic";
-
+import type { ReactElement } from "react";
+import type { NextPageWithLayout } from "./_app";
 const AuthForm = dynamic(import("@/components/auth/auth-form"), { ssr: false }); // Async API cannot be server-side rendered
-export default function Login() {
+
+const Login: NextPageWithLayout = () => {
   return (
     <>
       <Head>
@@ -14,4 +16,10 @@ export default function Login() {
       <AuthForm />
     </>
   );
-}
+};
+
+Login.getLayout = function getLayout(page: ReactElement) {
+  return page;
+};
+
+export default Login;

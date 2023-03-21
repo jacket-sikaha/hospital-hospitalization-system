@@ -33,22 +33,21 @@ const DashboardLayout = (props) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-  const router = useRouter();
+  // const router = useRouter();
 
-  2;
+  // // useRouter来控制布局展示
+  // const { pathname } = router;
+  // if (pathname.slice(1) === "" || pathname.slice(1) === "login") {
+  //   return <main>{props.children}</main>;
+  // } else {
+  //   getSession().then((session) => {
+  //     if (!session) {
+  //       router.replace("/login");
+  //       console.log("session", session);
+  //     }
+  //   });
+  // }
 
-  // useRouter来控制布局展示
-  const { pathname } = router;
-  if (pathname.slice(1) === "" || pathname.slice(1) === "login") {
-    return <main>{props.children}</main>;
-  } else {
-    getSession().then((session) => {
-      if (!session) {
-        router.replace("/login");
-        console.log("session", session);
-      }
-    });
-  }
   return (
     <Fragment>
       <Layout

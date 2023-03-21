@@ -1,8 +1,9 @@
 import Welcome from "@/components/welcome/welcome";
 import Head from "next/head";
+import type { ReactElement } from "react";
+import type { NextPageWithLayout } from "./_app";
 
-export default function Home() {
-  console.log(222);
+const Home: NextPageWithLayout = () => {
   return (
     <>
       <Head>
@@ -14,4 +15,12 @@ export default function Home() {
       <Welcome />
     </>
   );
-}
+};
+
+Home.getLayout = function getLayout(page: ReactElement) {
+  // page属性就是home组件的内容
+  // 有需要的话可以在此基础上多嵌套几个layout组件
+  return page;
+};
+
+export default Home;
