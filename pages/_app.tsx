@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 
 import { ReactElement, ReactNode, useEffect } from "react";
 import type { NextPage } from "next";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -14,6 +15,9 @@ export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
+
+// 创建一个 client
+const queryClient = new QueryClient();
 
 export default function App({
   Component,
@@ -35,7 +39,9 @@ export default function App({
 
   return (
     <SessionProvider session={session}>
-      {getLayout(<Component {...pageProps} />)}
+      <QueryClientProvider client={queryClient}>
+        {getLayout(<Component {...pageProps} />)}
+      </QueryClientProvider>
     </SessionProvider>
   );
   // return (

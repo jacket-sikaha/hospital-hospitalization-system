@@ -10,13 +10,14 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  const { page } = req.query;
+  let { page, pageSize } = req.query;
+  pageSize = parseInt(pageSize);
   try {
     const total = await drugCount();
     if (!total) {
       throw new Error("no data!");
     }
-    const result = await findAll(page, 10);
+    const result = await findAll(page, pageSize);
     res.status(200).json({ data: result, total, page });
   } catch (e) {
     res.status(500).json({ error: e.message });
