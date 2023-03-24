@@ -21,7 +21,8 @@ import type {
   SorterResult,
 } from "antd/es/table/interface";
 import axios from "axios";
-import { useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { resolve } from "path";
 
 interface DataType {
   key?: string;
@@ -34,6 +35,7 @@ interface DataType {
   incomingTime: string;
   outboundTime: string;
   type?: number;
+  operation?: number;
 }
 // interface Item {
 //   key: string;
@@ -73,7 +75,6 @@ const EditableCell: React.FC<EditableCellProps> = ({
   ...restProps
 }) => {
   const inputNode = inputType === "number" ? <InputNumber /> : <Input />;
-  console.log(title);
   return (
     <td {...restProps}>
       {editing ? (
@@ -104,8 +105,8 @@ export default function DrugManagement() {
   // const [data, setData] = useState(data);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-
   const [editingKey, setEditingKey] = useState("");
+
   const queryClient = useQueryClient();
   const { data, isLoading, error } = useQuery({
     queryKey: ["getDrug", page, pageSize],
@@ -114,7 +115,19 @@ export default function DrugManagement() {
       axios.get(`/api/drug/findAll?page=${page}&pageSize=${pageSize}`),
     keepPreviousData: true,
   });
-  // console.log("data", data);
+  const mutation = useMutation({
+    mutationFn: (obj: { operation: number; data: DataType }) => {
+      if (obj.operation) {
+        return axios.delete("/api/drug/delete", { _id: obj.data._id });
+      }
+      return axios.put("/api/drug/update", { record: obj.data });
+    },
+    onSuccess: (data, variables) => {
+      console.log("data", variables);
+      queryClient.setQueryData(["getDrug", { page, pageSize }], variables.data);
+    },
+  });
+
   const isEditing = (record: DataType) => record._id === editingKey;
 
   const edit = (record: Partial<DataType> & { _id: React.Key }) => {
@@ -124,17 +137,24 @@ export default function DrugManagement() {
   };
 
   const cancel = (page: number, pageSize: number) => {
-    console.log("val", page, pageSize);
-    setPageSize(pageSize);
-    setPage(page);
+    if (!isNaN(page)) {
+      setPageSize(pageSize);
+      setPage(page);
+    }
+
     setEditingKey("");
+  };
+
+  const delItem = (obj: DataType) => {
+    mutation.mutate({ operation: 1, data: obj });
   };
 
   const save = async (key: React.Key) => {
     try {
       const row = (await form.validateFields()) as DataType;
       console.log("row", row, key);
-      // const newData = [...data];
+      const newData: DataType = { _id: key, ...row };
+      mutation.mutate({ operation: 0, data: newData });
       // const index = newData.findIndex((item) => key === item.key);
       // if (index > -1) {
       //   const item = newData[index];
@@ -216,12 +236,35 @@ export default function DrugManagement() {
             </Popconfirm>
           </span>
         ) : (
-          <Typography.Link
-            disabled={editingKey !== ""}
-            onClick={() => edit(record)}
-          >
-            Edit
-          </Typography.Link>
+          <Space>
+            <Typography.Link
+              disabled={editingKey !== ""}
+              onClick={() => edit(record)}
+            >
+              Edit
+            </Typography.Link>
+            {/* <Typography.Link
+              disabled={editingKey !== ""}
+              onClick={() => edit(record)}
+              color={"red"}
+            >
+              Delete
+            </Typography.Link> */}
+            <Popconfirm
+              title="Delete the item"
+              description="Are you sure to delete this item?"
+              okText="Yes"
+              cancelText="No"
+              onConfirm={() => delItem(record)}
+            >
+              <Typography.Link
+                disabled={editingKey !== ""}
+                style={editingKey === "" ? { color: "red" } : {}}
+              >
+                Delete
+              </Typography.Link>
+            </Popconfirm>
+          </Space>
         );
       },
     },
