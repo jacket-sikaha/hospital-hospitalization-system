@@ -1,19 +1,23 @@
 import Head from "next/head";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import {
   Button,
+  DatePicker,
+  Drawer,
   Form,
   Input,
   InputNumber,
   InputRef,
   message,
   Popconfirm,
+  Row,
+  Select,
   Space,
   Table,
   Typography,
 } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
-import { SearchOutlined } from "@ant-design/icons";
+import { SearchOutlined, PlusOutlined } from "@ant-design/icons";
 import type {
   ColumnType,
   FilterConfirmProps,
@@ -80,19 +84,18 @@ const EditableCell: React.FC<EditableCellProps> = ({
     </td>
   );
 };
-
 export default function DrugManagement() {
   // 客户端组件内无法使用nodejs来调用数据库的方法
   // console.log("drugCount", drugCount());
-
   const [form] = Form.useForm();
-  // const [data, setData] = useState(data);
+  const [formDrawer] = Form.useForm();
+  const [openDrawer, setDrawerOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [editingKey, setEditingKey] = useState("");
 
   const queryClient = useQueryClient();
-  const { data, isLoading, error } = useQuery({
+  const { data, isFetching, error } = useQuery({
     queryKey: ["getDrug", page, pageSize],
     // queryFn: () => getDrug(page),
     queryFn: () =>
@@ -114,6 +117,12 @@ export default function DrugManagement() {
       //   total,
       //   ...data.value,
       // });
+      queryClient.invalidateQueries(["getDrug", page, pageSize]);
+    },
+  });
+  const addMutation = useMutation({
+    mutationFn: (data: DataType) => axios.post("/api/drug/insert", { data }),
+    onSuccess: () => {
       queryClient.invalidateQueries(["getDrug", page, pageSize]);
     },
   });
@@ -239,13 +248,6 @@ export default function DrugManagement() {
             >
               Edit
             </Typography.Link>
-            {/* <Typography.Link
-              disabled={editingKey !== ""}
-              onClick={() => edit(record)}
-              color={"red"}
-            >
-              Delete
-            </Typography.Link> */}
             <Popconfirm
               title="Delete the item"
               description="Are you sure to delete this item?"
@@ -292,6 +294,14 @@ export default function DrugManagement() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Button
+        type="primary"
+        onClick={() => setDrawerOpen(true)}
+        icon={<PlusOutlined />}
+        style={{ marginBottom: "1rem" }}
+      >
+        New drug
+      </Button>
       <Form form={form} component={false}>
         <Table
           components={{
@@ -312,9 +322,108 @@ export default function DrugManagement() {
             showTotal: (total) => `Total ${total} items`,
           }}
           scroll={{ y: 600 }}
-          loading={isLoading}
+          loading={isFetching}
         />
       </Form>
+
+      <Drawer
+        title="Create a new drug"
+        width={420}
+        onClose={() => {
+          setDrawerOpen(false);
+          formDrawer.resetFields();
+        }}
+        open={openDrawer}
+        bodyStyle={{ paddingBottom: 80 }}
+      >
+        <Form
+          form={formDrawer}
+          layout="vertical"
+          style={{ maxWidth: 300 }}
+          onFinish={(value: DataType) => {
+            addMutation.mutate(value);
+            setDrawerOpen(false);
+            formDrawer.resetFields();
+          }}
+          hideRequiredMark
+        >
+          <Form.Item
+            name="name"
+            label="Name"
+            rules={[{ required: true, message: "Please enter name" }]}
+          >
+            <Input placeholder="Please enter name" />
+          </Form.Item>
+          <Form.Item
+            name="specification"
+            label="Specification"
+            rules={[{ required: true, message: "Please enter specification" }]}
+          >
+            <Input
+              style={{ width: "100%" }}
+              placeholder="Please enter specification"
+            />
+          </Form.Item>
+          <Form.Item
+            name="price"
+            label="Price"
+            rules={[{ required: true, message: "Please enter price" }]}
+          >
+            <InputNumber min={1} defaultValue={1} />
+          </Form.Item>
+          <Form.Item
+            name="manufacturer"
+            label="Manufacturer"
+            rules={[{ required: true, message: "Please enter manufacturer" }]}
+          >
+            <Input
+              style={{ width: "100%" }}
+              placeholder="Please enter manufacturer"
+            />
+          </Form.Item>
+          <Form.Item
+            name="inventory"
+            label="Inventory"
+            rules={[{ required: true, message: "Please enter inventory" }]}
+          >
+            <InputNumber min={1} defaultValue={1} />
+          </Form.Item>
+          <Form.Item
+            name="incomingTime"
+            label="IncomingTime"
+            rules={[
+              { required: true, message: "Please choose the incomingTime" },
+            ]}
+          >
+            <DatePicker />
+          </Form.Item>
+          <Form.Item
+            name="outboundTime"
+            label="OutboundTime"
+            rules={[
+              {
+                required: true,
+                message: "please enter outboundTime",
+              },
+            ]}
+          >
+            <DatePicker />
+          </Form.Item>
+          <Form.Item wrapperCol={{ offset: 8, span: 8 }}>
+            <Space>
+              <Button type="primary" htmlType="submit">
+                Submit
+              </Button>
+              <Button
+                htmlType="button"
+                onClick={() => formDrawer.resetFields()}
+              >
+                Reset
+              </Button>
+            </Space>
+          </Form.Item>
+        </Form>
+      </Drawer>
     </>
   );
 }

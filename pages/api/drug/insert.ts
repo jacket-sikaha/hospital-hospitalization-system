@@ -13,7 +13,6 @@ export default async function handler(
 
   try {
     const { data } = req.body;
-
     const result = await drugInsert(data);
     const total = await drugCount();
     res.status(200).json({ result, total });
