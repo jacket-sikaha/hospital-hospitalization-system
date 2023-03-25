@@ -22,7 +22,6 @@ import type {
 } from "antd/es/table/interface";
 import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { resolve } from "path";
 
 interface DataType {
   key?: string;
@@ -37,22 +36,7 @@ interface DataType {
   type?: number;
   operation?: number;
 }
-// interface Item {
-//   key: string;
-//   name: string;
-//   age: number;
-//   address: string;
-// }
 
-// const originData: Item[] = [];
-// for (let i = 0; i < 100; i++) {
-//   originData.push({
-//     key: i.toString(),
-//     name: `Edward ${i}`,
-//     age: 32,
-//     address: `London Park no. ${i}`,
-//   });
-// }
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   editing: boolean;
   dataIndex: string;
@@ -116,15 +100,21 @@ export default function DrugManagement() {
     keepPreviousData: true,
   });
   const mutation = useMutation({
-    mutationFn: (obj: { operation: number; data: DataType }) => {
-      if (obj.operation) {
-        return axios.delete("/api/drug/delete", { _id: obj.data._id });
-      }
-      return axios.put("/api/drug/update", { record: obj.data });
+    mutationFn: (obj: { operation: number; data: DataType | string }) => {
+      return obj.operation
+        ? axios.delete("/api/drug/delete", { data: { id: obj.data } })
+        : axios.put("/api/drug/update", { record: obj.data });
     },
-    onSuccess: (data, variables) => {
-      console.log("data", variables);
-      queryClient.setQueryData(["getDrug", { page, pageSize }], variables.data);
+    // variables 是mutation传入的参数
+    onSuccess: (_, variables) => {
+      console.log("variables", variables);
+      // const { data, total } = _;
+      // 使用setQueryData为什么会不执行更新
+      // queryClient.setQueryData(["getDrug", { page, pageSize }], {
+      //   total,
+      //   ...data.value,
+      // });
+      queryClient.invalidateQueries(["getDrug", page, pageSize]);
     },
   });
 
@@ -141,12 +131,18 @@ export default function DrugManagement() {
       setPageSize(pageSize);
       setPage(page);
     }
-
     setEditingKey("");
   };
 
   const delItem = (obj: DataType) => {
-    mutation.mutate({ operation: 1, data: obj });
+    return new Promise(async (resolve) => {
+      //该方法是异步函数，属于消息队列
+      // setTimeout(() => {  //谁先resolve（完成）,窗口就关闭
+      //   console.log(1231);
+      //   resolve(2);
+      // }, 400);
+      mutation.mutate({ operation: 1, data: obj._id });
+    });
   };
 
   const save = async (key: React.Key) => {
@@ -256,6 +252,7 @@ export default function DrugManagement() {
               okText="Yes"
               cancelText="No"
               onConfirm={() => delItem(record)}
+              // okButtonProps={{ loading: mutation.isLoading }}
             >
               <Typography.Link
                 disabled={editingKey !== ""}

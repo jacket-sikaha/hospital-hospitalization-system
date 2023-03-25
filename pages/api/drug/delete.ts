@@ -12,10 +12,14 @@ export default async function handler(
   }
 
   try {
-    const { _id } = req.body;
+    const { id } = req.body;
 
-    const data = await drugDelete(_id);
-    res.status(200).json({ data });
+    const data = await drugDelete(id);
+    if (!data.deletedCount) {
+      throw new Error("update error!");
+    }
+    const total = await drugCount();
+    res.status(200).json({ data, total });
   } catch (e) {
     res.status(500).json({ error: e.message });
     return;
