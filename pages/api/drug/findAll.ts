@@ -2,17 +2,32 @@
 import { drugCount, findAll } from "@/lib/sql/drug";
 import type { NextApiRequest, NextApiResponse } from "next";
 
+function parse(data: any) {
+  // json不支持传输 RegExp 类型
+  if (Object.keys(data).length === 0) {
+    return;
+  }
+  for (const key in data) {
+    if (Object.prototype.hasOwnProperty.call(data, key)) {
+      data[key] = new RegExp(data[key]);
+    }
+  }
+}
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   const { page, pageSize } = req.query;
+  // get方法不能用body放数据
+  const { queryData } = req.body;
+  parse(queryData);
+  console.log("queryData", queryData);
   try {
     const total = await drugCount();
     if (!total) {
       throw new Error("no data!");
     }
-    const result = await findAll(page, pageSize);
+    const result = await findAll(page, pageSize, queryData);
     // const result: any[] = [];
     // for (let i = 0; i < 61; i++) {
     //   result.push({
@@ -27,7 +42,11 @@ export default async function handler(
     //   });
     // }
 
-    res.status(200).json({ data: result, total, page });
+    res.status(200).json({
+      data: result,
+      total: Object.keys(queryData).length > 0 ? result.length : total,
+      page,
+    });
   } catch (e) {
     res.status(500).json({ error: e.message });
     return;

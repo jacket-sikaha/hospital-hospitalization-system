@@ -1,5 +1,5 @@
 import Head from "next/head";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   Button,
   DatePicker,
@@ -9,6 +9,7 @@ import {
   InputNumber,
   InputRef,
   message,
+  Modal,
   Popconfirm,
   Row,
   Select,
@@ -26,7 +27,6 @@ import type {
 } from "antd/es/table/interface";
 import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-
 interface DataType {
   key?: string;
   _id: string;
@@ -50,7 +50,6 @@ interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   index: number;
   children: React.ReactNode;
 }
-
 // 根据editing控制每一单元格的表单变化
 const EditableCell: React.FC<EditableCellProps> = ({
   editing,
@@ -89,17 +88,21 @@ export default function DrugManagement() {
   // console.log("drugCount", drugCount());
   const [form] = Form.useForm();
   const [formDrawer] = Form.useForm();
+  const [formModal] = Form.useForm();
   const [openDrawer, setDrawerOpen] = useState(false);
+  const [openModal, setModalOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [editingKey, setEditingKey] = useState("");
-
+  const [queryData, setQueryData] = useState({});
   const queryClient = useQueryClient();
   const { data, isFetching, error } = useQuery({
-    queryKey: ["getDrug", page, pageSize],
+    queryKey: ["getDrug", page, pageSize, queryData],
     // queryFn: () => getDrug(page),
     queryFn: () =>
-      axios.get(`/api/drug/findAll?page=${page}&pageSize=${pageSize}`),
+      axios.post(`/api/drug/findAll?page=${page}&pageSize=${pageSize}`, {
+        queryData,
+      }),
     keepPreviousData: true,
   });
   const mutation = useMutation({
@@ -294,14 +297,34 @@ export default function DrugManagement() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Button
-        type="primary"
-        onClick={() => setDrawerOpen(true)}
-        icon={<PlusOutlined />}
-        style={{ marginBottom: "1rem" }}
-      >
-        New drug
-      </Button>
+
+      <Space size={"large"} style={{ marginBottom: "1rem" }}>
+        <Button
+          type="primary"
+          onClick={() => setDrawerOpen(true)}
+          icon={<PlusOutlined />}
+        >
+          New drug
+        </Button>
+        <Button
+          type="primary"
+          onClick={() => setModalOpen(true)}
+          icon={<SearchOutlined />}
+        >
+          查询数据
+        </Button>
+        <Button
+          type="primary"
+          onClick={() => {
+            setQueryData({});
+            setPage(1);
+            setPageSize(10);
+          }}
+        >
+          重置筛选条件
+        </Button>
+      </Space>
+
       <Form form={form} component={false}>
         <Table
           components={{
@@ -352,7 +375,7 @@ export default function DrugManagement() {
             label="Name"
             rules={[{ required: true, message: "Please enter name" }]}
           >
-            <Input placeholder="Please enter name" />
+            <Input placeholder="Please enter name" allowClear />
           </Form.Item>
           <Form.Item
             name="specification"
@@ -362,14 +385,16 @@ export default function DrugManagement() {
             <Input
               style={{ width: "100%" }}
               placeholder="Please enter specification"
+              allowClear
             />
           </Form.Item>
           <Form.Item
             name="price"
             label="Price"
+            initialValue="1"
             rules={[{ required: true, message: "Please enter price" }]}
           >
-            <InputNumber min={1} defaultValue={1} />
+            <InputNumber min={1} />
           </Form.Item>
           <Form.Item
             name="manufacturer"
@@ -379,14 +404,16 @@ export default function DrugManagement() {
             <Input
               style={{ width: "100%" }}
               placeholder="Please enter manufacturer"
+              allowClear
             />
           </Form.Item>
           <Form.Item
             name="inventory"
             label="Inventory"
+            initialValue="1"
             rules={[{ required: true, message: "Please enter inventory" }]}
           >
-            <InputNumber min={1} defaultValue={1} />
+            <InputNumber min={1} />
           </Form.Item>
           <Form.Item
             name="incomingTime"
@@ -395,7 +422,7 @@ export default function DrugManagement() {
               { required: true, message: "Please choose the incomingTime" },
             ]}
           >
-            <DatePicker />
+            <DatePicker format={"YYYY-MM-DD"} allowClear />
           </Form.Item>
           <Form.Item
             name="outboundTime"
@@ -407,7 +434,7 @@ export default function DrugManagement() {
               },
             ]}
           >
-            <DatePicker />
+            <DatePicker format={"YYYY-MM-DD"} allowClear />
           </Form.Item>
           <Form.Item wrapperCol={{ offset: 8, span: 8 }}>
             <Space>
@@ -424,6 +451,59 @@ export default function DrugManagement() {
           </Form.Item>
         </Form>
       </Drawer>
+
+      <Modal
+        getContainer={false}
+        title="查询数据"
+        open={openModal}
+        onOk={() => {
+          const obj = formModal.getFieldsValue(true);
+          let newObj: any = {};
+          // console.log(Object.entries(obj));
+          for (const key in obj) {
+            if (Object.prototype.hasOwnProperty.call(obj, key)) {
+              let element = obj[key];
+              newObj[key] =
+                typeof element === "string"
+                  ? element
+                  : element.format("YYYY-MM-DD");
+            }
+          }
+          setQueryData(newObj);
+          setPage(1);
+          setPageSize(10);
+          setModalOpen(false);
+        }}
+        onCancel={() => {
+          setModalOpen(false);
+        }}
+      >
+        <Form
+          form={formModal}
+          layout={"horizontal"}
+          style={{ maxWidth: 300 }}
+          hideRequiredMark
+        >
+          <Form.Item name="name" label="药品名称">
+            <Input placeholder="Please enter name" allowClear />
+          </Form.Item>
+
+          <Form.Item name="manufacturer" label="生产厂商">
+            <Input
+              style={{ width: "100%" }}
+              placeholder="Please enter manufacturer"
+              allowClear
+            />
+          </Form.Item>
+
+          <Form.Item name="incomingTime" label="最近进货时间">
+            <DatePicker format={"YYYY-MM-DD"} allowClear />
+          </Form.Item>
+          <Form.Item name="outboundTime" label="最近出库时间">
+            <DatePicker format={"YYYY-MM-DD"} allowClear />
+          </Form.Item>
+        </Form>
+      </Modal>
     </>
   );
 }
