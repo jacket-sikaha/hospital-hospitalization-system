@@ -8,6 +8,9 @@ import { ReactElement, ReactNode, useEffect } from "react";
 import type { NextPage } from "next";
 import { QueryClient, QueryClientProvider } from "react-query";
 
+import "dayjs/locale/zh-cn";
+import locale from "antd/locale/zh_CN";
+import { ConfigProvider } from "antd";
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
@@ -39,9 +42,11 @@ export default function App({
 
   return (
     <SessionProvider session={session}>
-      <QueryClientProvider client={queryClient}>
-        {getLayout(<Component {...pageProps} />)}
-      </QueryClientProvider>
+      <ConfigProvider locale={locale}>
+        <QueryClientProvider client={queryClient}>
+          {getLayout(<Component {...pageProps} />)}
+        </QueryClientProvider>
+      </ConfigProvider>
     </SessionProvider>
   );
   // return (

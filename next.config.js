@@ -12,6 +12,8 @@ const nextConfig = (phase) => {
         mongodb_password: "xxxxxxxxxxxx",
         mongodb_clustername: "cluster0",
         mongodb_database: "my-site-dev",
+        MONGODB_HOST: "",
+        MONGODB_PORT: "",
       },
     };
   }
@@ -25,6 +27,8 @@ const nextConfig = (phase) => {
       mongodb_username: "xxxxx",
       mongodb_password: "xxxxxxxxxxx",
       mongodb_clustername: "xxxxxxx",
+      MONGODB_HOST: "",
+      MONGODB_PORT: "",
     },
   };
 };

@@ -9,6 +9,7 @@ function parse(data: any) {
   }
   for (const key in data) {
     if (Object.prototype.hasOwnProperty.call(data, key)) {
+      // 处理成正则表达式形式达成模糊查询效果
       data[key] = new RegExp(data[key]);
     }
   }

@@ -27,6 +27,7 @@ import type {
 } from "antd/es/table/interface";
 import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import dayjs from "dayjs";
 interface DataType {
   key?: string;
   _id: string;
@@ -35,8 +36,8 @@ interface DataType {
   price: number;
   manufacturer: string;
   inventory: number;
-  incomingTime: string;
-  outboundTime: string;
+  incomingTime: string | Date;
+  outboundTime: string | Date;
   type?: number;
   operation?: number;
 }
@@ -61,7 +62,18 @@ const EditableCell: React.FC<EditableCellProps> = ({
   children,
   ...restProps
 }) => {
-  const inputNode = inputType === "number" ? <InputNumber /> : <Input />;
+  let inputNode;
+  switch (inputType) {
+    case 0:
+      inputNode = <Input />;
+      break;
+    case 1:
+      inputNode = <InputNumber />;
+      break;
+    default:
+      inputNode = <DatePicker format={"YYYY-MM-DD"} />;
+      break;
+  }
   return (
     <td {...restProps}>
       {editing ? (
@@ -134,6 +146,8 @@ export default function DrugManagement() {
 
   const edit = (record: Partial<DataType> & { _id: React.Key }) => {
     // setFieldsValue可以修改表单值，用以补上修改前的数据
+    record.incomingTime = dayjs(record.incomingTime);
+    record.outboundTime = dayjs(record.outboundTime);
     form.setFieldsValue(record);
     setEditingKey(record._id);
   };
@@ -148,11 +162,11 @@ export default function DrugManagement() {
 
   const delItem = (obj: DataType) => {
     return new Promise(async (resolve) => {
-      //该方法是异步函数，属于消息队列
       // setTimeout(() => {  //谁先resolve（完成）,窗口就关闭
       //   console.log(1231);
       //   resolve(2);
       // }, 400);
+      //该方法是异步函数，属于消息队列
       mutation.mutate({ operation: 1, data: obj._id });
     });
   };
@@ -188,43 +202,54 @@ export default function DrugManagement() {
       title: "药品名称",
       dataIndex: "name",
       width: "10%",
+      inputType: 0,
       editable: true,
     },
     {
       title: "规格",
       dataIndex: "specification",
       width: "10%",
+      inputType: 0,
       editable: true,
     },
     {
       title: "价格",
       dataIndex: "price",
       width: "10%",
+      inputType: 1,
       editable: true,
+      sorter: (a: DataType, b: DataType) => a.price - b.price,
     },
     {
       title: "生产厂家",
       dataIndex: "manufacturer",
       width: "15%",
+      inputType: 0,
       editable: true,
     },
     {
       title: "库存量",
       dataIndex: "inventory",
       width: "10%",
+      inputType: 1,
       editable: true,
+      sorter: (a: DataType, b: DataType) => a.inventory - b.inventory,
     },
     {
       title: "最近进货时间",
       dataIndex: "incomingTime",
       width: "15%",
+      inputType: 2,
       editable: true,
+      render: (_) => dayjs(_).format("YYYY-MM-DD"),
     },
     {
       title: "最近出库时间",
       dataIndex: "outboundTime",
       width: "15%",
+      inputType: 2,
       editable: true,
+      render: (_) => dayjs(_).format("YYYY-MM-DD"),
     },
     {
       title: "operation",
@@ -281,7 +306,7 @@ export default function DrugManagement() {
       ...col,
       onCell: (record: DataType) => ({
         record,
-        inputType: col.dataIndex === "age" ? "number" : "text",
+        inputType: col.inputType,
         dataIndex: col.dataIndex,
         title: col.title,
         editing: isEditing(record),
@@ -319,6 +344,7 @@ export default function DrugManagement() {
             setQueryData({});
             setPage(1);
             setPageSize(10);
+            formModal.resetFields();
           }}
         >
           重置筛选条件
