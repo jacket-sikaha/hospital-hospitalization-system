@@ -1,5 +1,5 @@
 import Head from "next/head";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import {
   Button,
   DatePicker,
@@ -7,7 +7,6 @@ import {
   Form,
   Input,
   InputNumber,
-  InputRef,
   message,
   Modal,
   Popconfirm,
@@ -17,17 +16,10 @@ import {
   Table,
   Typography,
 } from "antd";
-import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import { SearchOutlined, PlusOutlined } from "@ant-design/icons";
-import type {
-  ColumnType,
-  FilterConfirmProps,
-  FilterValue,
-  SorterResult,
-} from "antd/es/table/interface";
 import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 interface DataType {
   key?: string;
   _id: string;
@@ -36,8 +28,8 @@ interface DataType {
   price: number;
   manufacturer: string;
   inventory: number;
-  incomingTime: string | Date;
-  outboundTime: string | Date;
+  incomingTime: string | Dayjs;
+  outboundTime: string | Dayjs;
   type?: number;
   operation?: number;
 }
@@ -46,7 +38,7 @@ interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   editing: boolean;
   dataIndex: string;
   title: any;
-  inputType: "number" | "text";
+  inputType: number;
   record: DataType;
   index: number;
   children: React.ReactNode;
@@ -132,6 +124,7 @@ export default function DrugManagement() {
       //   total,
       //   ...data.value,
       // });
+      message.success(variables.operation ? "删除成功" : "修改成功");
       queryClient.invalidateQueries(["getDrug", page, pageSize]);
     },
   });
@@ -139,6 +132,7 @@ export default function DrugManagement() {
     mutationFn: (data: DataType) => axios.post("/api/drug/insert", { data }),
     onSuccess: () => {
       queryClient.invalidateQueries(["getDrug", page, pageSize]);
+      message.success("添加成功");
     },
   });
 
@@ -241,7 +235,7 @@ export default function DrugManagement() {
       width: "15%",
       inputType: 2,
       editable: true,
-      render: (_) => dayjs(_).format("YYYY-MM-DD"),
+      render: (_: string) => dayjs(_).format("YYYY-MM-DD"),
     },
     {
       title: "最近出库时间",
@@ -249,7 +243,7 @@ export default function DrugManagement() {
       width: "15%",
       inputType: 2,
       editable: true,
-      render: (_) => dayjs(_).format("YYYY-MM-DD"),
+      render: (_: string) => dayjs(_).format("YYYY-MM-DD"),
     },
     {
       title: "operation",
@@ -282,7 +276,6 @@ export default function DrugManagement() {
               okText="Yes"
               cancelText="No"
               onConfirm={() => delItem(record)}
-              // okButtonProps={{ loading: mutation.isLoading }}
             >
               <Typography.Link
                 disabled={editingKey !== ""}

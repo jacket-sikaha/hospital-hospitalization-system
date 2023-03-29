@@ -19,6 +19,7 @@ import { CSSProperties, useRef } from "react";
 import { useRouter } from "next/router";
 import { getSession, signIn } from "next-auth/react";
 import { useEffect, useState } from "react";
+import axios from "axios";
 type LoginType = "phone" | "account" | "register";
 
 const iconStyles: CSSProperties = {
@@ -28,10 +29,10 @@ const iconStyles: CSSProperties = {
   cursor: "pointer",
 };
 
-async function createUser(email: string, password: string) {
+async function createUser(username: string, email: string, password: string) {
   const response = await fetch("/api/auth/signup", {
     method: "POST",
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({ username, email, password }),
     headers: {
       "Content-Type": "application/json",
     },
@@ -40,9 +41,10 @@ async function createUser(email: string, password: string) {
   const data = await response.json();
 
   if (!response.ok) {
+    message.error(data.message);
     throw new Error(data.message || "Something went wrong!");
   }
-
+  message.success("提交成功");
   return data;
 }
 
@@ -50,26 +52,20 @@ export default function AuthForm() {
   const restFormRef = useRef<ProFormInstance>();
   const formRef = useRef<ProFormInstance>();
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-
   const [loginType, setLoginType] = useState<LoginType>("account");
-  const [isLoading, setIsLoading] = useState(true);
+  const code = useRef<string>(null);
   const router = useRouter();
-
-  async function submitHandler(username: string, password: string) {
-    const enteredEmail = username;
-    const enteredPassword = password;
-
-    // optional: Add validation
-    const result: unknown = await signIn("credentials", {
+  async function submitHandler(key: string, obj: object) {
+    // optional: Add validation"credentials"
+    const result: unknown = await signIn(key, {
       redirect: false,
-      email: enteredEmail,
-      password: enteredPassword,
+      ...obj,
     });
 
     if (!result.error) {
       // set some auth state
       message.success("提交成功");
-      router.replace("/profile");
+      router.replace("/asd");
     } else {
       message.error(result.error);
     }
@@ -81,8 +77,6 @@ export default function AuthForm() {
     getSession().then((session) => {
       if (session) {
         router.replace("/asd");
-      } else {
-        setIsLoading(false);
       }
     });
   }, [router]);
@@ -143,34 +137,51 @@ export default function AuthForm() {
                   },
                 },
               }}
-              onFinish={async ({ enteredEmail, enteredPassword }) => {
+              onFinish={async ({ username, enteredEmail, enteredPassword }) => {
                 try {
                   const result = await createUser(
+                    username,
                     enteredEmail,
                     enteredPassword
                   );
-                  message.success("提交成功");
-
                   return true;
                 } catch (error) {
-                  message.error(error);
-                  return false;
+                  console.log(error);
                 }
               }}
             >
               <ProFormText
                 width="md"
-                name="enteredEmail"
-                label="用户名"
+                name="username"
+                label="手机号"
                 // tooltip="最长为 16 位"
-                placeholder="请输入用户名"
+                placeholder="请输入手机号"
+                rules={[
+                  { required: true, message: "请输入手机号!" },
+                  { pattern: /^1\d{10}$/, message: "手机号格式错误！" },
+                ]}
               />
-
+              <ProFormText
+                width="md"
+                name="enteredEmail"
+                label="邮箱"
+                // tooltip="最长为 16 位"
+                placeholder="请输入邮箱"
+                rules={[
+                  { required: true, message: "请输入邮箱!" },
+                  {
+                    pattern:
+                      /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/,
+                    message: "邮箱格式错误！",
+                  },
+                ]}
+              />
               <ProFormText
                 width="md"
                 name="enteredPassword"
                 label="密码"
                 placeholder="请输入密码"
+                rules={[{ required: true, message: "请输入密码!" }]}
               />
             </ModalForm>
           ),
@@ -184,14 +195,14 @@ export default function AuthForm() {
               flexDirection: "column",
             }}
           >
-            <Divider plain>
+            {/* <Divider plain>
               <span
                 style={{ color: "#CCC", fontWeight: "normal", fontSize: 14 }}
               >
                 其他登录方式
               </span>
             </Divider>
-            <Space align="center" size={24}>
+             <Space align="center" size={24}>
               <div
                 style={{
                   display: "flex",
@@ -204,7 +215,10 @@ export default function AuthForm() {
                   borderRadius: "50%",
                 }}
               >
-                <GithubFilled style={{ ...iconStyles, color: "#000000" }} />
+                <GithubFilled
+                  style={{ ...iconStyles, color: "#000000" }}
+                  onClick={() => signIn("email", { email: "987555458@qq.com" })}
+                />
               </div>
               {/* <div
                 style={{
@@ -233,13 +247,20 @@ export default function AuthForm() {
                 }}
               >
                 <WeiboOutlined style={{ ...iconStyles, color: "#333333" }} />
-              </div> */}
-            </Space>
+              </div> 
+            </Space> */}
           </div>
         }
         onFinish={async (values) => {
-          const { username, password } = values;
-          await submitHandler(username, password);
+          const { username, password, email, captcha } = values;
+          console.log(values, code);
+          email
+            ? await submitHandler("emailLogin", {
+                code: code.current,
+                email,
+                captcha,
+              })
+            : await submitHandler("passwordLogin", { username, password });
         }}
       >
         <Tabs
@@ -248,7 +269,7 @@ export default function AuthForm() {
           onChange={(activeKey) => setLoginType(activeKey as LoginType)}
         >
           <Tabs.TabPane key={"account"} tab={"账号密码登录"} />
-          <Tabs.TabPane key={"phone"} tab={"手机号登录"} />
+          <Tabs.TabPane key={"phone"} tab={"邮箱登录"} />
         </Tabs>
         {loginType === "account" && (
           <>
@@ -258,8 +279,11 @@ export default function AuthForm() {
                 size: "large",
                 prefix: <UserOutlined className={"prefixIcon"} />,
               }}
-              placeholder={"用户名: email"}
-              rules={[{ required: true, message: "请输入用户名!" }]}
+              placeholder={"手机号: "}
+              rules={[
+                { required: true, message: "请输入手机号!" },
+                // { pattern: /^1\d{10}$/, message: "手机号格式错误！" },
+              ]}
             />
             <ProFormText.Password
               name="password"
@@ -279,11 +303,14 @@ export default function AuthForm() {
                 size: "large",
                 prefix: <MobileOutlined className={"prefixIcon"} />,
               }}
-              name="mobile"
-              placeholder={"手机号"}
+              name="email"
+              placeholder={"邮箱"}
               rules={[
-                { required: true, message: "请输入手机号！" },
-                { pattern: /^1\d{10}$/, message: "手机号格式错误！" },
+                { required: true, message: "请输入邮箱！" },
+                {
+                  pattern: /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/,
+                  message: "邮箱格式错误！",
+                },
               ]}
             />
             <ProFormCaptcha
@@ -294,6 +321,7 @@ export default function AuthForm() {
               captchaProps={{
                 size: "large",
               }}
+              phoneName="email" //onGetCaptcha的Email得有效 需要设置这个属性（email对应上面的输入框的name）
               placeholder={"请输入验证码"}
               captchaTextRender={(timing, count) => {
                 if (timing) {
@@ -303,8 +331,17 @@ export default function AuthForm() {
               }}
               name="captcha"
               rules={[{ required: true, message: "请输入验证码！" }]}
-              onGetCaptcha={async () => {
-                message.success("获取验证码成功！验证码为：1234");
+              onGetCaptcha={async (email) => {
+                try {
+                  const { data } = await axios.post("/api/email/sendMail", {
+                    email,
+                  });
+                  code.current = data.hashedCode;
+                  message.success("获取验证码成功！");
+                } catch (error) {
+                  message.error("获取验证码错误！");
+                  throw new Error("获取验证码错误");
+                }
               }}
             />
           </>

@@ -33,7 +33,18 @@ const DashboardLayout = (props) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-  // const router = useRouter();
+
+  const router = useRouter();
+  useEffect(() => {
+    getSession().then((session) => {
+      console.log("session", session);
+      if (!session) {
+        router.replace("/login");
+      }
+    });
+    // 加上router依赖项确保每次url发生变化都能进行session的时效性检验
+    // ？？？？？？这部分写在app入口页面 会有不断刷新调用的问题
+  }, [router]);
 
   // // useRouter来控制布局展示
   // const { pathname } = router;

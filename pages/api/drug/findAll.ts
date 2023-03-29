@@ -22,7 +22,7 @@ export default async function handler(
   // get方法不能用body放数据
   const { queryData } = req.body;
   parse(queryData);
-  console.log("queryData", queryData);
+  // console.log("queryData", queryData);
   try {
     const total = await drugCount();
     if (!total) {
