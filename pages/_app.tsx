@@ -28,6 +28,7 @@ export default function App({
 }: AppPropsWithLayout) {
   // Use the layout defined at the page level, if available
   // 检测页面组件page里是否含有getLayout属性，没有就采用设计好的layout组件包裹显示
+  // 被Layout组件包裹的页面会受到session的时效性检验
   const getLayout = Component.getLayout ?? ((page) => <Layout>{page}</Layout>);
 
   return (

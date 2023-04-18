@@ -21,7 +21,7 @@ import {
   Button,
 } from "antd";
 import Image from "next/image";
-import { items, items2 } from "./menuItem";
+import { layoutItems } from "./menuItem";
 import classes from "./main-navigation.module.css";
 import { useRef } from "react";
 
@@ -59,7 +59,7 @@ function MainNavigation() {
           theme="dark"
           mode="horizontal"
           defaultSelectedKeys={["app"]}
-          items={items}
+          items={layoutItems}
         />
       </div>
       <Popover

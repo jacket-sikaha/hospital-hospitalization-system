@@ -8,7 +8,7 @@ import clientPromise from "../../../lib/MongoDBAdapte";
 export default NextAuth({
   session: {
     jwt: true,
-    maxAge: 1 * 60, // 1min
+    maxAge: 5 * 60, // 1min
   },
   // adapter: MongoDBAdapter(clientPromise, {
   //   // databaseName: "hhs_auth",
@@ -21,7 +21,7 @@ export default NextAuth({
       async authorize(credentials) {
         console.log("credentials", credentials);
         const user = await usersCollection({
-          username: credentials.username,
+          phone: credentials.username,
         });
         if (!user) {
           throw new Error("No user found!");
@@ -30,9 +30,9 @@ export default NextAuth({
           credentials.password,
           user.password
         );
-        if (!isValid) {
-          throw new Error("Could not log you in!");
-        }
+        // if (!isValid) {
+        //   throw new Error("Could not log you in!");
+        // }
         delete user.password;
         console.log(111, user);
 
@@ -98,9 +98,7 @@ export default NextAuth({
     //   },
     async jwt({ token, user, account, profile, isNewUser }) {
       if (user) {
-        token.username = user.username;
-        token.type = user.type;
-        token.image = user.image;
+        token.user = user;
       }
       return token;
     },
@@ -109,9 +107,7 @@ export default NextAuth({
       // console.log("token12", token);
       // console.log("session12", session);
       if (session?.user && token) {
-        session.user.name = token.username;
-        session.user.type = token.type;
-        session.user.image = token.image;
+        session.user = { ...session.user, ...token.user };
       }
       return session;
     },

@@ -18,7 +18,7 @@ const Home: NextPageWithLayout = () => {
 };
 
 Home.getLayout = function getLayout(page: ReactElement) {
-  // page属性就是home组件的内容
+  // page属性就是当前页面组件component的内容
   // 有需要的话可以在此基础上多嵌套几个layout组件
   return page;
 };

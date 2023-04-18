@@ -23,7 +23,7 @@ import {
 } from "antd";
 import MainNavigation from "./main-navigation";
 import { getSession } from "next-auth/react";
-import { items, items2 } from "./menuItem";
+import { menuItems } from "./menuItem";
 const { Sider, Content } = Layout;
 
 // <List.Item>我的个人资料</List.Item>
@@ -85,7 +85,7 @@ const DashboardLayout = (props) => {
               defaultSelectedKeys={["1"]}
               defaultOpenKeys={["sub1"]}
               style={{ height: "100%", borderRight: 0 }}
-              items={items2}
+              items={menuItems}
             />
           </Sider>
           <Layout style={{ padding: "0 24px 24px" }}>

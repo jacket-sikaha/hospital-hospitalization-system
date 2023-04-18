@@ -8,7 +8,7 @@ async function handler(req, res) {
 
   const data = req.body;
 
-  const { username, email, password } = data;
+  const { phone, email, password } = data;
   console.log("password", data);
   // if (
   // !email ||
@@ -24,7 +24,7 @@ async function handler(req, res) {
   // }
 
   const existingUser = await usersIsExist({ email });
-  const existingUser2 = await usersCollection({ username });
+  const existingUser2 = await usersCollection({ phone });
 
   if (existingUser || existingUser2) {
     res.status(422).json({ message: "User exists already!" });
@@ -50,7 +50,7 @@ async function handler(req, res) {
     password: hashedPassword,
     image: "",
     type: 0,
-    username,
+    phone: username,
   });
   console.log("result", result);
   res.status(201).json({ message: "Created user!" });

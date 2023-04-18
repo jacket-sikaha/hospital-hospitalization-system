@@ -17,8 +17,8 @@ const moduleHHS = [
   {
     label: "入院管理",
     childrens: [
-      { link: "DrugDistribution", subLabel: "病人信息录入" },
-      { link: "", subLabel: "分配科室病床" },
+      { link: "PatientInformationInput", subLabel: "病人信息录入" },
+      { link: "BedAllocation", subLabel: "分配科室病床" },
     ],
   },
   {
@@ -45,7 +45,7 @@ const moduleHHS = [
   },
 ];
 
-const items: MenuProps["items"] = [
+const layoutItems: MenuProps["items"] = [
   {
     label: <Link href="/">欢迎页</Link>,
     key: "mail",
@@ -58,7 +58,7 @@ const items: MenuProps["items"] = [
   },
 ];
 
-const items2: MenuProps["items"] = [
+const menuItems: MenuProps["items"] = [
   UserOutlined,
   LaptopOutlined,
   NotificationOutlined,
@@ -91,4 +91,4 @@ const items2: MenuProps["items"] = [
   };
 });
 
-export { items, items2 };
+export { layoutItems, menuItems };

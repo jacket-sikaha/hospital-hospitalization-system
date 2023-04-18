@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import { ReactElement, useEffect } from "react";
 import type { NextPageWithLayout } from "./_app";
 // import AuthForm from "@/components/auth/auth-form";
-const AuthForm = dynamic(import("@/components/auth/auth-form"), { ssr: false }); // Async API cannot be server-side rendered
+const AuthForm = dynamic(import("@/components/auth/auth-form")); // Async API cannot be server-side rendered
 
 const Login: NextPageWithLayout = () => {
   return (

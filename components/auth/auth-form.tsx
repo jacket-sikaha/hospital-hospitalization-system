@@ -29,10 +29,10 @@ const iconStyles: CSSProperties = {
   cursor: "pointer",
 };
 
-async function createUser(username: string, email: string, password: string) {
+async function createUser(phone: string, email: string, password: string) {
   const response = await fetch("/api/auth/signup", {
     method: "POST",
-    body: JSON.stringify({ username, email, password }),
+    body: JSON.stringify({ phone, email, password }),
     headers: {
       "Content-Type": "application/json",
     },
