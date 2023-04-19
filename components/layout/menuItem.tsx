@@ -17,7 +17,7 @@ const moduleHHS = [
   {
     label: "入院管理",
     childrens: [
-      { link: "PatientInformationInput", subLabel: "病人信息录入" },
+      { link: "AdmissionJudgement", subLabel: "入院审核" },
       { link: "BedAllocation", subLabel: "分配科室病床" },
     ],
   },

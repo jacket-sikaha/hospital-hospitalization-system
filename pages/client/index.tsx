@@ -31,7 +31,9 @@ const ClientAdmission: NextPageWithLayout = () => {
         },
       },
     });
-    setUsers(res.data.result.filter((obj: patientType) => !obj.readyAdmission));
+    setUsers(
+      res.data.result.filter((obj: patientType) => obj.readyAdmission === 0)
+    );
   };
   useEffect(() => {
     getUserList();
@@ -42,8 +44,8 @@ const ClientAdmission: NextPageWithLayout = () => {
     if (!target) {
       return;
     }
-    (target.admission_date = dayjs(admission_date).format("YYYY-MM-DD")),
-      (target.readyAdmission = true);
+    target.admission_date = dayjs(admission_date).format("YYYY-MM-DD");
+    target.readyAdmission = 1;
     await axios.put("/api/patient/put", target);
     Toast.show("success");
     await getUserList();

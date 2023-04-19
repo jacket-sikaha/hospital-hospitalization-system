@@ -34,7 +34,7 @@ const ClientMR: NextPageWithLayout = (props) => {
         const target = users.find((obj) => obj.id === selectItem);
         if (target) {
           target.admission_date = "";
-          target.readyAdmission = false;
+          target.readyAdmission = 0;
           await axios.put("/api/patient/put", target);
           if (result) {
             await getUserList();
@@ -57,7 +57,9 @@ const ClientMR: NextPageWithLayout = (props) => {
         },
       },
     });
-    setUsers(res.data.result.filter((obj: patientType) => obj.readyAdmission));
+    setUsers(
+      res.data.result.filter((obj: patientType) => obj.readyAdmission === 1)
+    );
   };
   useEffect(() => {
     getUserList();

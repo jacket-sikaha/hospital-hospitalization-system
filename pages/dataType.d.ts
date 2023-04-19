@@ -9,5 +9,6 @@ type patientType = {
   emergency_contact_phone?: string;
   admission_date?: string;
   address?: string;
-  readyAdmission?: boolean;
+  readyAdmission?: boolean | number | string; // 0是未住院 1待住院批准 2住院ing
+  patientColor?: string;
 };
