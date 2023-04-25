@@ -25,7 +25,7 @@ export default async function handler(
     const hashedCode = await hashPassword(code);
     await sendMail(code, email);
     res.status(200).json({ data: "success", hashedCode });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch (e: any) {
+    res.status(500).json({ e: e.message });
   }
 }

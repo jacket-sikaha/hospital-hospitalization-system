@@ -1,10 +1,8 @@
 import Head from "next/head";
 import dynamic from "next/dynamic";
 const DynamicComponent = dynamic(
-  () => import("@/components/admissionJudgement")
+  () => import("@/components/admissionJudgement/index")
 );
-
-import React, { useEffect, useState } from "react";
 
 export default function AdmissionJudgementPage() {
   return (

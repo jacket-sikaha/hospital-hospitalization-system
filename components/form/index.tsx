@@ -15,12 +15,6 @@ import { useRef } from "react";
 
 const FFF = () => {
   const formRef = useRef<ProFormInstance>();
-  const onFill = () => {
-    formRef?.current?.setFieldsValue({
-      name: "张三",
-      company: "蚂蚁金服",
-    });
-  };
 
   const getFormatValues = () => {
     console.log(
@@ -40,24 +34,9 @@ const FFF = () => {
       style={{ margin: 20 + "px" }}
       title="病人信息录入表单"
       formRef={formRef}
-      allowClear
       submitter={{
         render: (props, doms) => {
-          return [
-            ...doms,
-            // <Button.Group key="refs" style={{ display: "block" }}>
-            //   <Button htmlType="button" onClick={getFormatValues} key="format">
-            //     获取格式化后的所有数据
-            //   </Button>
-            //   <Button
-            //     htmlType="button"
-            //     onClick={validateAndGetFormatValue}
-            //     key="format2"
-            //   >
-            //     校验表单并返回格式化后的所有数据
-            //   </Button>
-            // </Button.Group>,
-          ];
+          return [...doms];
         },
       }}
       onFinish={async (values: patientType) => {
@@ -78,6 +57,7 @@ const FFF = () => {
         label="姓名"
         placeholder="请输入姓名"
         rules={[{ required: true, message: "请输入!" }]}
+        allowClear
       />
       <ProFormDigit
         width="md"
@@ -108,18 +88,21 @@ const FFF = () => {
         label="电话"
         placeholder="请输入电话"
         rules={[{ required: true, message: "请输入!" }]}
+        allowClear
       />
       <ProFormText
         width="md"
         name="emergency_contact_name"
         label="紧急联系人"
         placeholder="请输入紧急联系人"
+        allowClear
       />
       <ProFormText
         width="md"
         name="emergency_contact_phone"
         label="紧急联系人电话"
         placeholder="请输入紧急联系人电话"
+        allowClear
       />
       <ProFormDatePicker
         label="日期"

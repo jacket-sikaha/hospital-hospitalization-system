@@ -48,7 +48,7 @@ export default async function handler(
       total: Object.keys(queryData).length > 0 ? result.length : total,
       page,
     });
-  } catch (e) {
+  } catch (e: any) {
     res.status(500).json({ error: e.message });
     return;
   }

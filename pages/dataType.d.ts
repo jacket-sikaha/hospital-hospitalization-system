@@ -1,14 +1,78 @@
+import dayjs from "dayjs";
+
 type patientType = {
   id?: string;
-  _id?: string;
+  _id: string;
   name: string;
   age: string;
   gender?: string;
   phone: string;
   emergency_contact_name?: string;
   emergency_contact_phone?: string;
-  admission_date?: string;
+  admission_date: string;
   address?: string;
-  readyAdmission?: boolean | number | string; // 0是未住院 1待住院批准 2住院ing
+  // 0是未住院 1待住院批准 2待分配床位 3住院ing
+  readyAdmission: boolean | number | string;
   patientColor?: string;
 };
+
+interface bedType {
+  _id: string;
+  id: string;
+  department_id: number;
+  department_name: string;
+  patient_id: number;
+  bed_name: string;
+}
+
+interface bedOptionsType {
+  value: string | number;
+  label: string | number;
+  id?: string | number;
+  disabled?: boolean;
+  children?: bedOptionsType[];
+}
+
+interface mrType {
+  _id: string;
+  id: string;
+  department_id: number;
+  department_name: string;
+  bed_name: string;
+  pid: number | string;
+  bid: number | string;
+  name: string;
+  age: string;
+  gender?: string;
+  phone: string;
+  emergency_contact_name?: string;
+  emergency_contact_phone?: string;
+  address?: string;
+  // 0是未住院 1待住院批准 2待分配床位 3住院ing
+  readyAdmission: boolean | number | string;
+  admission_date: string;
+  patientColor?: string;
+
+  problem: string; // 主诉
+  diagnostic: string; //诊断
+  examination: any; //  医疗化验检查安排
+  TPS: string[]; //  治疗计划
+  Medication: drugType[]; //  用药安排
+  doctor: string;
+  createDate: string | dayjs;
+}
+
+interface drugType {
+  id: string;
+  _id?: string;
+  index?: string | number;
+  name?: string; // 药品名称
+  specification?: string; // 用药剂量
+  price?: number;
+  use_count?: number;
+  use_time?: number; // 用药频率
+  manufacturer?: string;
+  status: boolean;
+  inventory?: number;
+  children?: drugType[];
+}

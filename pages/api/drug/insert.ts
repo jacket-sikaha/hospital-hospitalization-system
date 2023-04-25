@@ -16,7 +16,7 @@ export default async function handler(
     const result = await drugInsert(data);
     const total = await drugCount();
     res.status(200).json({ result, total });
-  } catch (e) {
+  } catch (e: any) {
     res.status(500).json({ error: e.message });
     return;
   }

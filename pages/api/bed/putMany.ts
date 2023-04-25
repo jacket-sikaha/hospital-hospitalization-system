@@ -1,5 +1,4 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { patientUpdate } from "@/lib/sql/patient";
+import { bedUpdateMany } from "@/lib/sql/bed";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -12,13 +11,13 @@ export default async function handler(
   }
 
   try {
-    const record = req.body;
-    const id = record._id;
-    delete record._id;
-    const data = await patientUpdate(id, record);
-    if (!data.value) {
-      throw new Error("update error!");
+    const { selKey, update } = req.body;
+    if (!selKey?.length) {
+      throw new Error("条件不足!");
     }
+    const data = await bedUpdateMany(selKey, update);
+
+    console.log("data", data);
     res.status(200).json({ data });
   } catch (e: any) {
     res.status(500).json({ error: e.message });

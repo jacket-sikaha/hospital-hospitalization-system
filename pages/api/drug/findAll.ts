@@ -18,7 +18,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { page, pageSize } = req.query;
+  const { page, pageSize }: any = req.query;
   // get方法不能用body放数据
   const { queryData } = req.body;
   parse(queryData);
@@ -48,7 +48,7 @@ export default async function handler(
       total: Object.keys(queryData).length > 0 ? result.length : total,
       page,
     });
-  } catch (e) {
+  } catch (e: any) {
     res.status(500).json({ error: e.message });
     return;
   }

@@ -53,11 +53,11 @@ export default function AuthForm() {
   const formRef = useRef<ProFormInstance>();
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [loginType, setLoginType] = useState<LoginType>("account");
-  const code = useRef<string>(null);
+  const code = useRef<string>("");
   const router = useRouter();
   async function submitHandler(key: string, obj: object) {
     // optional: Add validation"credentials"
-    const result: unknown = await signIn(key, {
+    const result: any = await signIn(key, {
       redirect: false,
       ...obj,
     });

@@ -10,6 +10,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 
 import "dayjs/locale/zh-cn";
 import locale from "antd/locale/zh_CN";
+// import locale from "antd/lib/locale/zh_CN";
 import { ConfigProvider } from "antd";
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;

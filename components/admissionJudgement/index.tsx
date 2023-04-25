@@ -5,29 +5,22 @@ import {
   Card,
   Space,
   Switch,
-  Table,
-  Tag,
   Transfer,
   message,
   Modal,
 } from "antd";
-import type { ColumnsType, TableRowSelection } from "antd/es/table/interface";
-import type {
-  TransferDirection,
-  TransferItem,
-  TransferProps,
-} from "antd/es/transfer";
+import type { TransferDirection } from "antd/es/transfer";
 import axios from "axios";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { faker } from "@faker-js/faker";
+import { useRouter } from "next/router";
 const { confirm } = Modal;
 const { Meta } = Card;
-export default function AdmissionJudgementPage() {
+export default function AdmissionJudgement() {
+  const router = useRouter();
   const [targetKeys, setTargetKeys] = useState<string[]>([]);
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
-  // const [manToAdmission, setManToAdmission] = useState<patientType[]>([]);
-  const [patientColor, setPatientColor] = useState<patientType[]>([]);
   const [disabled, setDisabled] = useState(false);
 
   const [queryData, setQueryData] = useState({ readyAdmission: 1 });

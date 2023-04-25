@@ -15,7 +15,7 @@ export default async function handler(
     console.log("data", data);
     const result = await patientInsert(data);
     res.status(200).json({ result });
-  } catch (e) {
+  } catch (e: any) {
     res.status(500).json({ error: e.message });
     return;
   }

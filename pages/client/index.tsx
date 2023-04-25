@@ -38,8 +38,8 @@ const ClientAdmission: NextPageWithLayout = () => {
   useEffect(() => {
     getUserList();
   }, []);
-  const onSubmit = async () => {
-    const { patient, admission_date } = form.getFieldValue();
+  const onSubmit = async (value: any) => {
+    const { patient, admission_date } = value;
     const target = users[patient];
     if (!target) {
       return;

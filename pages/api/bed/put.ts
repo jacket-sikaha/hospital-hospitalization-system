@@ -1,5 +1,4 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { drugCount, drugUpdate } from "@/lib/sql/drug";
+import { bedUpdate } from "@/lib/sql/bed";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -12,15 +11,14 @@ export default async function handler(
   }
 
   try {
-    const { record } = req.body;
+    const record = req.body;
     const id = record._id;
     delete record._id;
-    const data = await drugUpdate(id, record);
+    const data = await bedUpdate(id, record);
     if (!data.value) {
       throw new Error("update error!");
     }
-    const total = await drugCount();
-    res.status(200).json({ data, total });
+    res.status(200).json({ data });
   } catch (e: any) {
     res.status(500).json({ error: e.message });
     return;

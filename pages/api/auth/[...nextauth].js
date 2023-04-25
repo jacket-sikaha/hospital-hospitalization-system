@@ -3,12 +3,12 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import EmailProvider from "next-auth/providers/email";
 import { verifyPassword } from "../../../lib/auth";
 import { usersCollection, usersIsExist } from "../../../lib/db";
-import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
-import clientPromise from "../../../lib/MongoDBAdapte";
+// import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
+// import clientPromise from "../../../lib/MongoDBAdapte";
 export default NextAuth({
   session: {
     jwt: true,
-    maxAge: 5 * 60, // 1min
+    maxAge: 115 * 60, // 1min
   },
   // adapter: MongoDBAdapter(clientPromise, {
   //   // databaseName: "hhs_auth",

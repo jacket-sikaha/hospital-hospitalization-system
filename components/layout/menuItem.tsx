@@ -11,39 +11,7 @@ import {
 } from "@ant-design/icons";
 import { MenuProps } from "antd";
 import Link from "next/link";
-
-const moduleHHS = [
-  { label: "用户管理", childrens: [{ link: "asd", subLabel: "用户信息" }] },
-  {
-    label: "入院管理",
-    childrens: [
-      { link: "AdmissionJudgement", subLabel: "入院审核" },
-      { link: "BedAllocation", subLabel: "分配科室病床" },
-    ],
-  },
-  {
-    label: "科室管理",
-    childrens: [
-      { link: "", subLabel: "医生工作站" },
-      { link: "", subLabel: "护士工作站" },
-    ],
-  },
-  {
-    label: "药房管理",
-    childrens: [
-      { link: "DrugDistribution", subLabel: "药品分配" },
-      { link: "DrugManagement", subLabel: "药品管理" },
-    ],
-  },
-  {
-    label: "财务管理",
-    childrens: [{ link: "", subLabel: "费用结算" }],
-  },
-  {
-    label: "出院管理",
-    childrens: [{ link: "", subLabel: "出院手续管理" }],
-  },
-];
+type MenuItem = Required<MenuProps>["items"][number];
 
 const layoutItems: MenuProps["items"] = [
   {
@@ -58,37 +26,45 @@ const layoutItems: MenuProps["items"] = [
   },
 ];
 
-const menuItems: MenuProps["items"] = [
-  UserOutlined,
-  LaptopOutlined,
-  NotificationOutlined,
-  PieChartOutlined,
-  ContainerOutlined,
-  MailOutlined,
-].map((icon, index) => {
-  const key = String(index + 1);
-  const { label, childrens } = moduleHHS[index];
-
+function getItem(
+  label: React.ReactNode,
+  key: React.Key,
+  link?: string,
+  icon?: React.ReactNode,
+  children?: MenuItem[]
+): MenuItem {
   return {
-    key: `sub${key}`,
-    icon: React.createElement(icon),
-    label: label,
-    // children: new Array(4).fill(null).map((_, j) => {
-    //   const subKey = index * 4 + j + 1;
-    //   return {
-    //     key: subKey,
-    //     label: `option${subKey}`,
-    //   };
-    // }),
-    children: childrens.map((val, j) => {
-      const subKey = index + j + 1;
-      const { link, subLabel } = val;
-      return {
-        key: subKey,
-        label: <Link href={link ? `/${link}` : "/"}>{subLabel}</Link>,
-      };
-    }),
-  };
-});
+    key,
+    children,
+    icon,
+    label: link ? <Link href={`/${link}`}>{label}</Link> : label,
+  } as MenuItem;
+}
+
+const menuItems: MenuItem[] = [
+  getItem("入院管理", "sub1", "", <LaptopOutlined />, [
+    getItem("入院审核", "1", "AdmissionJudgement"),
+    getItem("病床分配", "2", "BedAllocation"),
+  ]),
+  getItem("科室管理", "sub2", "", <NotificationOutlined />, [
+    getItem("医嘱开具", "3", "AddMR"), // 分布表单 查=》add
+    getItem("病历管理", "4", "MRManagement"), // 查询表单+表格
+    getItem("患者管理监控", "5", "PatientManagement"), // 卡片布局+护士todo+患者描述列表详情
+  ]),
+  getItem("药房管理", "sub3", "", <PieChartOutlined />, [
+    getItem("药品分配", "6", "DrugDistribution"),
+    getItem("药品管理", "7", "DrugManagement"),
+  ]),
+  getItem("财务管理", "sub4", "", <ContainerOutlined />, [
+    getItem("费用结算", "9"),
+  ]),
+  getItem("出院管理", "sub5", "", <MailOutlined />, [
+    getItem("出院手续管理", "15"),
+  ]),
+  // getItem("用户管理", "sub6", "",<UserOutlined/>, [
+  //   getItem("Option 5", "5"),
+  //   getItem("Option 6", "6"),
+  // ]),
+];
 
 export { layoutItems, menuItems };

@@ -1,5 +1,4 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { findAll } from "@/lib/sql/patient";
+import { findAll } from "@/lib/sql/mr";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -10,7 +9,7 @@ export default async function handler(
   // get方法不能用body放数据
   const { queryData } = req.body;
   try {
-    const result = await findAll(page, pageSize, queryData);
+    const result = await findAll(page, 1000, queryData);
 
     res.status(200).json({
       result,
