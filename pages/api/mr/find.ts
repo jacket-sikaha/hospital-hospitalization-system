@@ -8,7 +8,6 @@ export default async function handler(
   const { page, pageSize }: any = req.query;
   // get方法不能用body放数据
   const { queryData } = req.body;
-  console.log("y", queryData);
   try {
     const result = await findAll(page, 1000, queryData);
 

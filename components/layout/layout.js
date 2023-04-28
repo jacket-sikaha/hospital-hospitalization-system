@@ -95,6 +95,7 @@ const DashboardLayout = (props) => {
                 marginTop: "26px",
                 minHeight: 280,
                 background: colorBgContainer,
+                overflowY: "auto",
               }}
             >
               <main>{props.children}</main>

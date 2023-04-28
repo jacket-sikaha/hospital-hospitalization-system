@@ -1,7 +1,13 @@
+@font-face {
+  font-family: "My Font";
+  src: url("../public/DreamHanSerifCN-W16.ttf") format("truetype");
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  font-family: "My Font", sans-serif;
 }
 
 html,

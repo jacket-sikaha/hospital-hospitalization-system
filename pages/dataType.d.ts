@@ -56,7 +56,7 @@ interface mrType {
   problem: string; // 主诉
   diagnostic: string; //诊断
   examination: any; //  医疗化验检查安排
-  TPS: string[]; //  治疗计划
+  TPS: any[]; //  治疗计划
   Medication: drugType[]; //  用药安排
   doctor: string;
   createDate: string | dayjs;

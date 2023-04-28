@@ -37,7 +37,6 @@ const StepsForms = () => {
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
   const [prefix, setPrefix] = useState("");
   const [dataSource, setDataSource] = useState<drugType[]>([]);
-  // const [selOpt, setSelOpt] = useState([]);
   const selOpt = useRef(null);
   const [searchOpt, setSearchOpt] = useState<drugType[]>([]);
 

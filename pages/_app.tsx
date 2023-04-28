@@ -2,7 +2,6 @@ import "@/styles/globals.css";
 import Layout from "../components/layout/layout";
 import type { AppProps } from "next/app";
 import { getSession, SessionProvider } from "next-auth/react";
-import { useRouter } from "next/router";
 
 import { ReactElement, ReactNode, useEffect } from "react";
 import type { NextPage } from "next";
@@ -12,6 +11,13 @@ import "dayjs/locale/zh-cn";
 import locale from "antd/locale/zh_CN";
 // import locale from "antd/lib/locale/zh_CN";
 import { ConfigProvider } from "antd";
+
+import localFont from "@next/font/local";
+
+// Font files can be colocated inside of `pages`
+// const myFont = localFont({
+//   src: "../public/三极行楷简体-粗.ttf",
+// });
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
