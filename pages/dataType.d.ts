@@ -43,7 +43,7 @@ interface mrType {
   bid: number | string;
   name: string;
   age: string;
-  gender?: string;
+  gender?: string | number;
   phone: string;
   emergency_contact_name?: string;
   emergency_contact_phone?: string;
