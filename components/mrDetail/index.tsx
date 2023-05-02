@@ -159,7 +159,13 @@ export default function MRManagePage({ mrid }: any) {
                       justifyContent: "space-around",
                     }}
                   >
-                    <div style={{ margin: ".5rem 0" }}>
+                    <div style={{ margin: ".5rem" }}>
+                      <div style={{ color: "#00000073" }}>药剂师</div>
+                      <div style={{ color: "#000000D9" }}>
+                        {item.pharmacist || "-"}
+                      </div>
+                    </div>
+                    <div style={{ margin: ".5rem" }}>
                       <div style={{ color: "#00000073" }}>是否分配</div>
                       <div style={{ color: "#000000D9" }}>
                         {item.status ? "是" : "否"}
@@ -195,10 +201,6 @@ export default function MRManagePage({ mrid }: any) {
     {
       title: "创建日期",
       dataIndex: "createDate",
-      // renderFormItem: (item, param, form) => {
-      //   console.log(item, param);
-      //   return <ProFormDatePicker name={item.key} />;
-      // },
       valueType: "date",
       search: {
         transform: (value: any) => {
@@ -256,7 +258,6 @@ export default function MRManagePage({ mrid }: any) {
             if (key === "createDate") {
               newObj.createDate = dayjs(row.createDate).format("YYYY-MM-DD");
             }
-            console.log(row, key);
             return handleUpdate(newObj);
           },
         }}

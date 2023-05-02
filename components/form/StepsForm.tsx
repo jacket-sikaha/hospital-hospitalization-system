@@ -83,10 +83,12 @@ const StepsForms = () => {
     },
     {
       title: "用药频率",
+      valueType: "digit",
       dataIndex: "use_time",
     },
     {
       title: "数量",
+      valueType: "digit",
       dataIndex: "use_count",
     },
     {

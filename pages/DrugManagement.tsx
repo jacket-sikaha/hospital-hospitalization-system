@@ -63,7 +63,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
       inputNode = <InputNumber />;
       break;
     default:
-      inputNode = <DatePicker format={"YYYY-MM-DD"} />;
+      inputNode = <DatePicker />;
       break;
   }
   return (
@@ -441,7 +441,7 @@ export default function DrugManagement() {
               { required: true, message: "Please choose the incomingTime" },
             ]}
           >
-            <DatePicker format={"YYYY-MM-DD"} allowClear />
+            <DatePicker allowClear />
           </Form.Item>
           <Form.Item
             name="outboundTime"
@@ -453,7 +453,7 @@ export default function DrugManagement() {
               },
             ]}
           >
-            <DatePicker format={"YYYY-MM-DD"} allowClear />
+            <DatePicker allowClear />
           </Form.Item>
           <Form.Item wrapperCol={{ offset: 8, span: 8 }}>
             <Space>
@@ -516,10 +516,10 @@ export default function DrugManagement() {
           </Form.Item>
 
           <Form.Item name="incomingTime" label="最近进货时间">
-            <DatePicker format={"YYYY-MM-DD"} allowClear />
+            <DatePicker allowClear />
           </Form.Item>
           <Form.Item name="outboundTime" label="最近出库时间">
-            <DatePicker format={"YYYY-MM-DD"} allowClear />
+            <DatePicker allowClear />
           </Form.Item>
         </Form>
       </Modal>

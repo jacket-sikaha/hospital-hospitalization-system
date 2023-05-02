@@ -60,6 +60,11 @@ interface mrType {
   Medication: drugType[]; //  用药安排
   doctor: string;
   createDate: string | dayjs;
+
+  children?: undefined | drugType[];
+  pname?: string;
+
+  money?: any;
 }
 
 interface drugType {
@@ -72,7 +77,8 @@ interface drugType {
   use_count?: number;
   use_time?: number; // 用药频率
   manufacturer?: string;
-  status: boolean;
+  pharmacist?: string; //配药的药剂师name
+  status: boolean; // 是否分配
   inventory?: number;
   children?: drugType[];
 }

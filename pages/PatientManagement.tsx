@@ -13,6 +13,7 @@ import {
   Modal,
   Skeleton,
   Space,
+  Statistic,
   Tag,
   Timeline,
   Tooltip,
@@ -178,7 +179,13 @@ export default function BedAllocationPage() {
       </Head>
       <Card
         style={{ width: "100%", height: "100%" }}
-        title={<h3>患者管理监控</h3>}
+        title={<h2>患者管理监控</h2>}
+        extra={
+          <Statistic
+            title={dName[parseInt(activeTabKey1)] + "在院人数"}
+            value={data?.data?.result?.length}
+          />
+        }
         tabList={tabList}
         activeTabKey={activeTabKey1}
         onTabChange={onTab1Change}

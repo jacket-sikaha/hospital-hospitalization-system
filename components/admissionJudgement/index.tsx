@@ -15,6 +15,7 @@ import { ExclamationCircleFilled } from "@ant-design/icons";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { faker } from "@faker-js/faker";
 import { useRouter } from "next/router";
+import { patientType } from "@/pages/dataType";
 const { confirm } = Modal;
 const { Meta } = Card;
 export default function AdmissionJudgement() {

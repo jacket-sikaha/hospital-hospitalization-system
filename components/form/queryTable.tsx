@@ -50,8 +50,14 @@ const QueryTable = () => {
       title: "病历状态",
       dataIndex: "readyAdmission",
       search: false,
-      onFilter: (text: any) => {
-        return text === 3;
+      filters: [
+        {
+          text: "处理中",
+          value: 3,
+        },
+      ],
+      onFilter: (value: any, record: mrType) => {
+        return record.readyAdmission === 3;
       },
       render: (text: any) => {
         return text === 3 ? "处理中" : "已完成";

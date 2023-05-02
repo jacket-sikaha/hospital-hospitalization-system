@@ -1,3 +1,4 @@
+import { patientType } from "@/pages/dataType";
 import {
   ProFormDigit,
   ProFormInstance,
