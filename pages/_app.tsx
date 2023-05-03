@@ -51,7 +51,7 @@ export default function App({
   //   <SessionProvider session={session}>
   //     <Layout>
   //       <Component {...pageProps} />
-  //     </Layout>{" "}
+  //     </Layout>
   //   </SessionProvider>
   // );
 }

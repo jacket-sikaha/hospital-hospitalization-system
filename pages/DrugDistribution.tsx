@@ -137,13 +137,6 @@ export default function DrugDistribution() {
       const res = await axios.put(`/api/mr/handleMDistribution`, arr);
       setSelectedRowKeys([]);
       queryClient.invalidateQueries(["getPatient", queryData]);
-      // setQueryData({
-      //   readyAdmission: 3,
-      //   problem: { $exists: true },
-      //   money: { $exists: false },
-      //   department_id: undefined,
-      //   createDate: undefined,
-      // });
       message.success("分配成功");
       return {
         data: res.data.result,

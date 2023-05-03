@@ -71,10 +71,6 @@ export default function AdmissionJudgement() {
     console.log("targetSelectedKeys: ", targetSelectedKeys);
   };
 
-  const handleDisable = (checked: boolean) => {
-    setDisabled(checked);
-  };
-
   const showPromiseConfirm = () => {
     confirm({
       title: "入院批准确认",
@@ -90,7 +86,7 @@ export default function AdmissionJudgement() {
     });
   };
 
-  const renderItem = (item: patientType) => {
+  const renderItem = (item: any) => {
     const customLabel = (
       <Card
         style={{
@@ -119,7 +115,7 @@ export default function AdmissionJudgement() {
             </Avatar>
           }
           title={item.name}
-          description={`${item.phone} | ${item.gender}`}
+          description={`${item.phone} | ${parseInt(item.gender) ? "男" : "女"}`}
         />
       </Card>
     );
@@ -162,12 +158,6 @@ export default function AdmissionJudgement() {
           pagination
         />
         <Space>
-          {/* <Switch
-            unCheckedChildren="disabled"
-            checkedChildren="disabled"
-            checked={disabled}
-            onChange={handleDisable}
-          /> */}
           <Button type="primary" onClick={showPromiseConfirm}>
             批准确认
           </Button>

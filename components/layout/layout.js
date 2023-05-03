@@ -26,9 +26,6 @@ import { getSession } from "next-auth/react";
 import { menuItems } from "./menuItem";
 const { Sider, Content } = Layout;
 
-// <List.Item>我的个人资料</List.Item>
-// 退出
-
 const DashboardLayout = (props) => {
   const {
     token: { colorBgContainer },

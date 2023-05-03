@@ -50,7 +50,7 @@ interface mrType {
   address?: string;
   // 0是未住院 1待住院批准 2待分配床位 3住院ing
   readyAdmission: boolean | number | string;
-  admission_date: string;
+  admission_date: string; // 入院日期
   patientColor?: string;
 
   problem: string; // 主诉
@@ -59,12 +59,19 @@ interface mrType {
   TPS: any[]; //  治疗计划
   Medication: drugType[]; //  用药安排
   doctor: string;
-  createDate: string | dayjs;
+  createDate: string | dayjs; // mr创建日期
+  dischargeDate: string | dayjs; // 出院日期
 
   children?: undefined | drugType[];
   pname?: string;
 
-  money?: any;
+  money?: {
+    medication?: number;
+    hospitalization: number;
+    examination: number;
+    cure: number;
+    total: number;
+  };
 }
 
 interface drugType {

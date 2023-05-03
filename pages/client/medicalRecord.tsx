@@ -18,6 +18,7 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { Action } from "antd-mobile/es/components/action-sheet";
 import { GetServerSideProps } from "next";
+import { patientType } from "../dataType";
 const ClientMR: NextPageWithLayout = (props) => {
   const [users, setUsers] = useState<patientType[]>([]);
   const [visible, setVisible] = useState(false);

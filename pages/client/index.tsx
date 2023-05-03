@@ -15,6 +15,7 @@ import {
 } from "antd-mobile";
 import dayjs from "dayjs";
 import axios from "axios";
+import { patientType } from "../dataType";
 const ClientAdmission: NextPageWithLayout = () => {
   const [form] = Form.useForm();
   const [users, setUsers] = useState<patientType[]>([]);
@@ -73,7 +74,7 @@ const ClientAdmission: NextPageWithLayout = () => {
           <Radio.Group defaultValue="0">
             <Space direction="vertical">
               {users.map((obj, i) => (
-                <Radio key={obj.id} value={i}>
+                <Radio key={obj._id} value={i}>
                   {obj.name}
                 </Radio>
               ))}

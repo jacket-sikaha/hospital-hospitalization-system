@@ -15,6 +15,7 @@ import {
 } from "antd-mobile";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { patientType } from "../dataType";
 const ClientMSGAdd: NextPageWithLayout = () => {
   const [form] = Form.useForm();
   const router = useRouter();
@@ -35,6 +36,7 @@ const ClientMSGAdd: NextPageWithLayout = () => {
         });
         return;
       }
+      values.readyAdmission = 0;
       await axios.post(`/api/patient/ins`, values);
       Toast.show({
         icon: "success",

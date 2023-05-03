@@ -146,6 +146,38 @@ const StepsForms = () => {
           stepProps={{
             description: "开始",
           }}
+          onFinish={(values: any) => {
+            return axios
+              .post(`/api/mr/find`, {
+                queryData: {
+                  ...values,
+                  readyAdmission: 3,
+                  problem: { $exists: true },
+                },
+              })
+              .then(async (res) => {
+                console.log(res.data.result?.length);
+                if (res.data.result?.length === 1) {
+                  throw new Error("病人一次住院只能开一次医嘱");
+                }
+                if (res.data.result?.length === 0) {
+                  const patient = await axios.post(`/api/mr/find`, {
+                    queryData: {
+                      ...values,
+                      readyAdmission: 3,
+                    },
+                  });
+                  if (patient.data.result?.length !== 1) {
+                    throw new Error("病人不存在");
+                  }
+                }
+                return true;
+              })
+              .catch((err) => {
+                message.error(err.message);
+                return false;
+              });
+          }}
         >
           <ProFormText
             name="name"

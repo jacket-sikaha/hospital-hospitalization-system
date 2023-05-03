@@ -56,10 +56,11 @@ const menuItems: MenuItem[] = [
     getItem("药品管理", "7", "DrugManagement"),
   ]),
   getItem("财务管理", "sub4", "", <ContainerOutlined />, [
-    getItem("费用结算", "9"),
+    getItem("财务报表", "8", "FinancialChart"),
+    getItem("财务账单", "9", "FinancialTable"),
   ]),
   getItem("出院管理", "sub5", "", <MailOutlined />, [
-    getItem("出院手续管理", "15"),
+    getItem("出院手续管理", "16", "Discharge"),
   ]),
   // getItem("用户管理", "sub6", "",<UserOutlined/>, [
   //   getItem("Option 5", "5"),

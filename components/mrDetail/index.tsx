@@ -81,10 +81,16 @@ export default function MRManagePage({ mrid }: any) {
     {
       title: "主诉",
       dataIndex: "problem",
+      editable: (_: any, obj: mrType) => {
+        return obj.doctor ? true : false;
+      },
     },
     {
       title: "诊断",
       dataIndex: "diagnostic",
+      editable: (_: any, obj: mrType) => {
+        return obj.doctor ? true : false;
+      },
     },
     {
       title: "病历状态",
@@ -98,6 +104,9 @@ export default function MRManagePage({ mrid }: any) {
       title: "医疗化验检查安排",
       dataIndex: "examination",
       span: 1,
+      editable: (_: any, obj: mrType) => {
+        return obj.doctor ? true : false;
+      },
       renderFormItem: (item: any, param: any, form: any) => <MyTag />,
       render: (val: any) => {
         return (
@@ -125,6 +134,9 @@ export default function MRManagePage({ mrid }: any) {
       title: "治疗计划",
       dataIndex: "TPS",
       span: 2,
+      editable: (_: any, obj: mrType) => {
+        return obj.doctor ? true : false;
+      },
       render: (val: any) => {
         return (
           <List
@@ -197,11 +209,17 @@ export default function MRManagePage({ mrid }: any) {
     {
       title: "负责医生",
       dataIndex: "doctor",
+      editable: (_: any, obj: mrType) => {
+        return obj.doctor ? true : false;
+      },
     },
     {
       title: "创建日期",
       dataIndex: "createDate",
       valueType: "date",
+      editable: (_: any, obj: mrType) => {
+        return obj.doctor ? true : false;
+      },
       search: {
         transform: (value: any) => {
           return { createDate: dayjs(value).format("YYYY-MM-DD") };

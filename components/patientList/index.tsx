@@ -36,7 +36,6 @@ export default function BedAllocationPage() {
     keepPreviousData: true,
     onSuccess([promiseA, promiseB]) {
       const tmp = parseOptions(promiseB.data.result);
-      originData;
       originData.current = [...promiseB.data.result];
       originOptData.current = [...tmp];
       setBedOptions(tmp);

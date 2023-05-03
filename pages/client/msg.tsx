@@ -19,6 +19,7 @@ import { AddCircleOutline } from "antd-mobile-icons";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
+import { patientType } from "../dataType";
 
 const ClientMSG: NextPageWithLayout = (props) => {
   const [users, setUsers] = useState<patientType[]>([]);
@@ -53,13 +54,13 @@ const ClientMSG: NextPageWithLayout = (props) => {
         }}
       >
         <List header="用户列表" style={{ flex: 1 }}>
-          {users.map((user) => (
+          {users.map((user: any) => (
             <List.Item
               key={user.id}
               description={
                 <Space>
                   {user.phone} <Divider direction="vertical" />
-                  {user.gender ? "男" : "女" || "无"}{" "}
+                  {parseInt(user.gender) ? "男" : "女" || "无"}
                   <Divider direction="vertical" />
                   {user.id}
                   <Divider direction="vertical" />
