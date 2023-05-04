@@ -1,34 +1,12 @@
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  DatePicker,
-  Form,
-  Select,
-  Space,
-  Switch,
-  Table,
-  message,
-  theme,
-} from "antd";
-import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
-import type {
-  FilterValue,
-  SorterResult,
-  TableRowSelection,
-} from "antd/es/table/interface";
-import { useQuery, useQueryClient } from "react-query";
-import axios from "axios";
-import { drugType, mrType } from "./dataType";
-import dayjs from "dayjs";
+import dynamic from "next/dynamic";
 
-const dName = ["内科", "外科", "妇产科", "小儿科", "神经科", "消化内科", "All"];
+const MoneyChart = dynamic(() => import("@/components/chart/MoneyChart"), {
+  ssr: false,
+});
 
 export default function FinancialChartPage() {
-  const [form] = Form.useForm();
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-  const [dataSource, setDataSource] = useState<mrType[]>();
-
   return (
     <>
       <Head>
@@ -37,6 +15,7 @@ export default function FinancialChartPage() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <MoneyChart></MoneyChart>
     </>
   );
 }

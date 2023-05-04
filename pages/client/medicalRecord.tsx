@@ -48,7 +48,7 @@ const ClientMR: NextPageWithLayout = (props) => {
   const getUserList = async () => {
     const arr = JSON.parse(localStorage.getItem("HHS_CLIENT_ID") || "[]");
     if (!arr.length) {
-      Toast.show("error");
+      Toast.show("no data");
       return;
     }
     const res = await axios.post(`/api/patient/find`, {

@@ -1,34 +1,13 @@
 import Head from "next/head";
-import React, { useEffect, useState } from "react";
-import {
-  Button,
-  DatePicker,
-  Form,
-  Select,
-  Space,
-  Switch,
-  Table,
-  message,
-  theme,
-} from "antd";
-import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
-import type {
-  FilterValue,
-  SorterResult,
-  TableRowSelection,
-} from "antd/es/table/interface";
-import { useQuery, useQueryClient } from "react-query";
-import axios from "axios";
-import { drugType, mrType } from "./dataType";
-import dayjs from "dayjs";
-
-const dName = ["内科", "外科", "妇产科", "小儿科", "神经科", "消化内科", "All"];
+import dynamic from "next/dynamic";
+const QueryMoneyTable = dynamic(
+  () => import("@/components/form/queryMoneyTable"),
+  {
+    ssr: false,
+  }
+); // Async API cannot be server-side rendered
 
 export default function FinancialTablePage() {
-  const [form] = Form.useForm();
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-  const [dataSource, setDataSource] = useState<mrType[]>();
-
   return (
     <>
       <Head>
@@ -37,6 +16,7 @@ export default function FinancialTablePage() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <QueryMoneyTable></QueryMoneyTable>
     </>
   );
 }

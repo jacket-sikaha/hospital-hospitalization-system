@@ -18,7 +18,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { page, pageSize } = req.query;
+  const { page, pageSize }: any = req.query;
   // get方法不能用body放数据
   const { queryData } = req.body;
   parse(queryData);

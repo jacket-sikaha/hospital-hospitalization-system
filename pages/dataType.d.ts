@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import { type } from "os";
 
 type patientType = {
   id?: string;
@@ -55,7 +56,7 @@ interface mrType {
 
   problem: string; // 主诉
   diagnostic: string; //诊断
-  examination: any; //  医疗化验检查安排
+  examination: any[] | undefined; //  医疗化验检查安排
   TPS: any[]; //  治疗计划
   Medication: drugType[]; //  用药安排
   doctor: string;
@@ -65,13 +66,7 @@ interface mrType {
   children?: undefined | drugType[];
   pname?: string;
 
-  money?: {
-    medication?: number;
-    hospitalization: number;
-    examination: number;
-    cure: number;
-    total: number;
-  };
+  money?: financial;
 }
 
 interface drugType {
@@ -88,4 +83,17 @@ interface drugType {
   status: boolean; // 是否分配
   inventory?: number;
   children?: drugType[];
+}
+
+interface financial {
+  _id: string; // 账单ID
+  pid: string; // 病人ID
+  mrid: string; // 病历ID
+  name: string; // 病人姓名
+  date: string; // 付款日期
+  medication?: number; // 用药费用
+  hospitalization: number; // 住院费用
+  examination: number; // 医疗检查费用
+  cure: number; //治疗费用
+  total: number; // 总共消费
 }

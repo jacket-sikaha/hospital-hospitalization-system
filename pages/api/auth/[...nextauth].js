@@ -5,10 +5,14 @@ import { verifyPassword } from "../../../lib/auth";
 import { usersCollection, usersIsExist } from "../../../lib/db";
 // import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 // import clientPromise from "../../../lib/MongoDBAdapte";
+const secret = process.env.SECRET;
 export default NextAuth({
   session: {
     jwt: true,
     maxAge: 115 * 60, // 1min
+  },
+  jwt: {
+    secret: secret,
   },
   // adapter: MongoDBAdapter(clientPromise, {
   //   // databaseName: "hhs_auth",
@@ -34,7 +38,7 @@ export default NextAuth({
         //   throw new Error("Could not log you in!");
         // }
         delete user.password;
-        console.log(111, user);
+        // console.log(111, user);
 
         return user;
       },

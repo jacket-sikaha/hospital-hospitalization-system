@@ -5,6 +5,7 @@ import { findAll, medicalRecordUpdate } from "@/lib/sql/mr";
 import { patientUpdate } from "@/lib/sql/patient";
 import { drugType, mrType } from "@/pages/dataType";
 import { faker } from "@faker-js/faker";
+import Big from "big.js";
 import dayjs from "dayjs";
 import type { NextApiRequest, NextApiResponse } from "next";
 
@@ -33,6 +34,7 @@ export default async function handler(
         admission_date: bed.admission_date,
       })),
     });
+    // console.log("result", result);
     if (result.length !== arr.length) {
       throw new Error("数据异常");
     }
@@ -41,7 +43,6 @@ export default async function handler(
       pidArr.push(pid);
       let hospitalization =
         dayjs(dischargeDate).diff(admission_date, "day") * 100;
-      console.log("hospitalization", hospitalization);
       let examination = faker.datatype.number({
         min: 100,
         max: 10000,
@@ -57,7 +58,12 @@ export default async function handler(
         hospitalization,
         examination,
         cure,
-        total: money?.medication || 0 + hospitalization + examination + cure,
+        // total: money?.medication || 0 + hospitalization + examination + cure,
+        total: new Big(money?.medication || 0)
+          .plus(new Big(hospitalization))
+          .plus(new Big(examination))
+          .plus(new Big(cure))
+          .toNumber(),
       };
       financial.push({
         ...newMoney,

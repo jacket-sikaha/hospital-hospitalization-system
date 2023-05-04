@@ -1,7 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { medicalRecordUpdate } from "@/lib/sql/mr";
 import { drugType, mrType } from "@/pages/dataType";
-import { Faker, faker } from "@faker-js/faker";
+import { faker } from "@faker-js/faker";
+import Big from "big.js";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -17,15 +18,16 @@ export default async function handler(
     const arr = req.body;
     let idArr: string[] = [];
     arr.forEach((record: any) => {
-      let medication = 0;
+      let medication = new Big(0);
       record.Medication.forEach((element: drugType) => {
         element.status = true;
-        medication +=
-          (element.price || 10) *
-          (element.use_count || parseInt(faker.random.numeric(1)) + 1);
+        const tmp = new Big(element.price || 10).times(
+          new Big(element.use_count || parseInt(faker.random.numeric(1)) + 1)
+        );
+        medication = medication.plus(tmp);
       });
       idArr.push(record._id);
-      record.money = { medication };
+      record.money = { medication: medication.toNumber() };
       delete record._id;
     });
     // console.log("arr", arr);

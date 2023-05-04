@@ -19,7 +19,6 @@ import axios from "axios";
 import { mrType } from "./dataType";
 import dayjs from "dayjs";
 import { useQuery, useQueryClient } from "react-query";
-const { Option } = Select;
 interface UserType {
   admission_date: string;
   dischargeDate: string;
@@ -133,7 +132,6 @@ export default function DischargePage() {
     });
     try {
       if (!users || users?.length === 0) {
-        setLoading(false);
         throw new Error("出院人选不能为空");
       }
       await axios.put(`/api/handleDischarge`, users);
@@ -142,6 +140,7 @@ export default function DischargePage() {
       setLoading(false);
       formProvider.resetFields();
     } catch (error: any) {
+      setLoading(false);
       message.error(error.message);
     }
   };

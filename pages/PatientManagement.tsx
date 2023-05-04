@@ -46,7 +46,7 @@ export default function BedAllocationPage() {
   const router = useRouter();
   const [form] = Form.useForm();
   const [activeTabKey1, setActiveTabKey1] = useState<string>("0");
-  const [contentList, setContentList] = useState<mrType>([]);
+  const [contentList, setContentList] = useState<mrType>();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // readyAdmission为其他的说明该住院记录已完成
@@ -68,7 +68,11 @@ export default function BedAllocationPage() {
   };
   const handleCancel = () => setIsModalOpen(false);
   const handleOk = async () => {
-    if (!contentList.examination || contentList.examination?.length === 0) {
+    if (
+      !contentList ||
+      !contentList.examination ||
+      contentList.examination?.length === 0
+    ) {
       setIsModalOpen(false);
       return null;
     }
@@ -132,7 +136,11 @@ export default function BedAllocationPage() {
   };
 
   const modalJSX = () => {
-    if (!contentList.examination || contentList.examination?.length === 0) {
+    if (
+      !contentList ||
+      !contentList.examination ||
+      contentList.examination?.length === 0
+    ) {
       return null;
     }
     return (
