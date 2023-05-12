@@ -20,6 +20,7 @@ import {
   Timeline,
   Tooltip,
   Typography,
+  message,
 } from "antd";
 import { drugType, mrType } from "@/pages/dataType";
 import MyTag from "./TPSEdit";
@@ -252,6 +253,7 @@ export default function MRManagePage({ mrid }: any) {
   const handleUpdate = async (record: mrType) => {
     try {
       const res = await axios.put(`/api/mr/putByID`, record);
+      message.success("修改成功");
       return {
         data: res.data.result,
         success: true,

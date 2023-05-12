@@ -11,13 +11,13 @@ import {
   List,
   Popup,
   Space,
+  Tag,
   Toast,
 } from "antd-mobile";
 import { AddCircleOutline } from "antd-mobile-icons";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { Action } from "antd-mobile/es/components/action-sheet";
-import { GetServerSideProps } from "next";
 import { patientType } from "../dataType";
 const ClientMR: NextPageWithLayout = (props) => {
   const [users, setUsers] = useState<patientType[]>([]);
@@ -85,7 +85,21 @@ const ClientMR: NextPageWithLayout = (props) => {
                 setVisible(true);
                 setSelectItem(user.id);
               }}
-              description={user.phone}
+              description={
+                <Space wrap>
+                  <div>
+                    手机：
+                    <Tag color="#2db7f5">{user.phone}</Tag>
+                  </div>
+                  <Tag color="#87d068">
+                    {parseInt(user.gender || "1") ? "男" : "女"}
+                  </Tag>
+                  <div>
+                    计划入院日期：
+                    <Tag color="#108ee9">{user.admission_date}</Tag>
+                  </div>
+                </Space>
+              }
               extra={
                 <Button color="primary" fill="outline">
                   操作
@@ -106,7 +120,6 @@ const ClientMR: NextPageWithLayout = (props) => {
           onClose={() => {
             setVisible(false);
             setSelectItem("");
-            console.log(12312313);
           }}
         />
       </div>

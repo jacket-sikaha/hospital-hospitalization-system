@@ -16,28 +16,28 @@ const ClientLayout = (props: any) => {
   const tabs = [
     {
       key: "1",
-      title: "信息登记",
+      title: "住院申请",
       icon: <AppOutline />,
       link: "/client",
     },
     {
       key: "2",
-      title: "住院记录",
+      title: "住院栏",
       icon: <UnorderedListOutline />,
       link: "/client/medicalRecord",
     },
     {
       key: "3",
-      title: "我的信息",
-      icon: <MessageOutline />,
+      title: "用户信息",
+      icon: <UserOutline />,
       link: "/client/msg",
     },
-    // {
-    //   key: "4",
-    //   title: "消息",
-    //   icon: <UserOutline />,
-    //   link: "/client/patientAdd",
-    // },
+    {
+      key: "4",
+      title: "住院记录",
+      icon: <MessageOutline />,
+      link: "/client/myMR",
+    },
   ];
 
   const handleTabBarChange = (key: string) => {

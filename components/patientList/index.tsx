@@ -33,7 +33,7 @@ export default function BedAllocationPage() {
   const { data, isFetching, error } = useQuery({
     queryKey: ["getPatient", queryData],
     queryFn: () => initialData(queryData),
-    keepPreviousData: true,
+    refetchOnWindowFocus: false,
     onSuccess([promiseA, promiseB]) {
       const tmp = parseOptions(promiseB.data.result);
       originData.current = [...promiseB.data.result];

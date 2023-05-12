@@ -67,7 +67,6 @@ const MoneyChart = () => {
   const pieRef = useRef<Pie | null>(null);
   const [lineForm] = Form.useForm();
   const [pieForm] = Form.useForm();
-  console.log(123123);
   useEffect(() => {
     const initialization = async () => {
       const res = await axios.post(`/api/financial/find`);
@@ -144,7 +143,7 @@ const MoneyChart = () => {
         <Form.Item>
           <Space size={[30, 0]}>
             <Button type="primary" htmlType="submit">
-              Submit
+              Search
             </Button>
             <Button htmlType="button" onClick={() => lineForm.resetFields()}>
               Reset
@@ -174,7 +173,7 @@ const MoneyChart = () => {
         <Form.Item>
           <Space size={[30, 0]}>
             <Button type="primary" htmlType="submit">
-              Submit
+              Search
             </Button>
             <Button htmlType="button" onClick={() => pieForm.resetFields()}>
               Reset
