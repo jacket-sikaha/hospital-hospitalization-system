@@ -38,3 +38,4 @@ package-lock.json
 
 
 next.config.js
+scripts/tsconfig-paths-bootstrap.js

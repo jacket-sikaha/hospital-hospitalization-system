@@ -6,8 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "postinstall": "node ./scripts/tsconfig-paths-bootstrap.js"
+    "lint": "next lint"
   },
   "dependencies": {
     "@ant-design/pro-components": "^2.3.53",
@@ -33,7 +32,6 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-query": "^3.39.3",
-    "tsconfig-paths": "^4.2.0",
     "typescript": "4.9.5"
   },
   "devDependencies": {
