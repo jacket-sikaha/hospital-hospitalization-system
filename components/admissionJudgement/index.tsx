@@ -74,7 +74,7 @@ export default function AdmissionJudgement() {
   const showPromiseConfirm = () => {
     confirm({
       title: "入院批准确认",
-      icon: <ExclamationCircleFilled />,
+      // icon: <ExclamationCircleFilled />,
       content: "入院批准确认，此操作将不可逆！",
       onOk() {
         return admissionMutation.mutate({
