@@ -277,7 +277,7 @@ export default function AuthForm() {
               name="username"
               fieldProps={{
                 size: "large",
-                prefix: <UserOutlined className={"prefixIcon"} />,
+                prefix: <UserOutlined />,
               }}
               placeholder={"手机号: "}
               rules={[
@@ -289,7 +289,7 @@ export default function AuthForm() {
               name="password"
               fieldProps={{
                 size: "large",
-                prefix: <LockOutlined className={"prefixIcon"} />,
+                prefix: <LockOutlined />,
               }}
               placeholder={"密码:"}
               rules={[{ required: true, message: "请输入密码！" }]}
@@ -301,7 +301,7 @@ export default function AuthForm() {
             <ProFormText
               fieldProps={{
                 size: "large",
-                prefix: <MobileOutlined className={"prefixIcon"} />,
+                prefix: <MobileOutlined />,
               }}
               name="email"
               placeholder={"邮箱"}
@@ -316,7 +316,7 @@ export default function AuthForm() {
             <ProFormCaptcha
               fieldProps={{
                 size: "large",
-                prefix: <LockOutlined className={"prefixIcon"} />,
+                prefix: <LockOutlined />,
               }}
               captchaProps={{
                 size: "large",
