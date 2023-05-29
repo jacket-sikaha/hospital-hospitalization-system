@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -13,6 +13,7 @@
     "@antv/g2plot": "^2.4.29",
     "@emotion/css": "^11.10.6",
     "@next-auth/mongodb-adapter": "^1.1.1",
+    "@next/bundle-analyzer": "^13.4.3",
     "@next/font": "13.1.6",
     "@types/node": "18.13.0",
     "@types/react": "18.0.27",

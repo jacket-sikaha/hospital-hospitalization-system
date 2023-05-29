@@ -50,7 +50,8 @@ async function handler(req, res) {
     password: hashedPassword,
     image: "",
     type: 0,
-    phone: username,
+    phone,
+    username: email,
   });
   console.log("result", result);
   res.status(201).json({ message: "Created user!" });

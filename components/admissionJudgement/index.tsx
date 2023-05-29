@@ -13,7 +13,7 @@ import type { TransferDirection } from "antd/es/transfer";
 import axios from "axios";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { faker } from "@faker-js/faker";
+import { faker } from "@faker-js/faker/locale/zh_CN";
 import { useRouter } from "next/router";
 import { patientType } from "@/pages/dataType";
 const { confirm } = Modal;
@@ -74,7 +74,7 @@ export default function AdmissionJudgement() {
   const showPromiseConfirm = () => {
     confirm({
       title: "入院批准确认",
-      // icon: <ExclamationCircleFilled />,
+      icon: <ExclamationCircleFilled />,
       content: "入院批准确认，此操作将不可逆！",
       onOk() {
         return admissionMutation.mutate({

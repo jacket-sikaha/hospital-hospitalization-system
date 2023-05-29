@@ -40,3 +40,4 @@ package-lock.json
 
 scripts/tsconfig-paths-bootstrap.js
 next.config temp.js
+.env

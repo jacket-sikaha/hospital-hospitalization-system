@@ -2,7 +2,7 @@
 import { sendMail } from "@/lib/emailTransporter";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { hashPassword } from "../../../lib/auth";
-import { faker } from "@faker-js/faker";
+import { faker } from "@faker-js/faker/locale/zh_CN";
 import { usersIsExist } from "@/lib/db";
 export default async function handler(
   req: NextApiRequest,

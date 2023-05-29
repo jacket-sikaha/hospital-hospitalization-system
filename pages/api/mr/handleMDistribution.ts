@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { medicalRecordUpdate } from "@/lib/sql/mr";
 import { drugType, mrType } from "@/pages/dataType";
-import { faker } from "@faker-js/faker";
+import { faker } from "@faker-js/faker/locale/zh_CN";
 import Big from "big.js";
 import type { NextApiRequest, NextApiResponse } from "next";
 
